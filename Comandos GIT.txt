@@ -1,0 +1,31 @@
+Primeiro você precisa Iniciar o Git
+	- git init
+
+Depois Adicione os arquivos que vão ser enviados
+	- git add . --> O "." significa todos os arquivos presentes na pasta
+
+Agora, você precisa falar para o git em qual repositório ele vai guardar os arquivos
+	- git remote add origin LINK_DO_REPOSITÓRIO
+
+Log após confirme as alterações feitas por você!
+	- git commit -m 'descrição'
+
+Envie os arquivos e tudo dará certo!
+	- git push
+
+------------------------------------------------------------
+TRABALHO EM EQUIPE
+
+Para trabalhar em equipe, é bom se utilizar as branchs, para evitar qualquer dor de cabeça futura.
+
+Verifique as branchs que estão no seu sistema usando:
+	- git branch
+
+Para criar uma branch, use:
+	- git branch recurso
+
+Para renomear uma branch, use:
+	- git branch -m nome-do-branch novo-nome-do-branch
+
+Para acessar a branch criada, use:
+	- git checkout nome_do_branch
