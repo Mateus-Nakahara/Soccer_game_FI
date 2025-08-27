@@ -309,7 +309,7 @@ void credits()
 	Sleep(500);
 	char *titulo = "--- CREDITOS ---";
     
-    char functions[][120] = {
+    char *functions[] = {
         "Designs",
         "Tudo o Que o mini timoteo fez",
         "Tudo que a luisa fez",
@@ -317,7 +317,7 @@ void credits()
         "Agradecimentos"
     };
     
-    char names[][120] = {
+    char *names[] = {
     	"Mateus (n30), Marcos (n28)",
     	"Marcos Vinicus Dunge Cassalati",
     	"Luisa",
@@ -359,32 +359,70 @@ void credits()
 		
 }
 
-void instructions(){
+void teclas(){
 	system("cls");
+	printf("PALMEIRAS NÃO TEM MUNDIAL!");
+	gotoxy(44, 30);
+	printf("Pressione qualquer tecla para voltar...");
+	getch();
+}
+
+void como_jogar(){
+	system("cls");
+	printf("PALMEIRAS NÃO TEM MUNDIAL!");
+	gotoxy(44, 30);
+	printf("Pressione qualquer tecla para voltar...");
+	getch();
+}
+
+void instructions(){
+	int escolha;
 	
-	textcolor(14);
 	
 	char *text = "MANUAL";
-	char *title1 = "INSTRUÇÕES";
-	char *title2 = "INSTRUÇÕES";
+	char *title1 = "Selecione uma página para ver as instruções";
+		
+	char *paginas[] = {
+		"[0] - SAIR",
+		"[1] - TECLAS",
+		"[2] - COMO JOGAR"
+	};
 	
-	gotoxy((120-strlen(text)) / 2, 2);
-	printf(text);
+	while(escolha != 0){
+		system("cls");
 	
-	textcolor(3);
-	
-	gotoxy(20, 3);
-	printf(title1);
-	
-	gotoxy(100 - strlen(title2), 3);
-	printf(title2);
-	
-	
-	textcolor(15);
-	gotoxy(44, 30);
-    printf("Pressione qualquer tecla para sair...");
-	
-	getchar();
+		textcolor(14);
+		
+		gotoxy((120-strlen(text)) / 2, 2);
+		printf(text);
+		
+		textcolor(3);
+		
+		gotoxy((120-strlen(title1)) / 2, 4);
+		printf(title1);
+		
+		int tamanho_textos = sizeof(paginas) / sizeof(paginas[0]);
+		
+		textcolor(15);
+		for(i = 0; i<tamanho_textos; i++){
+			gotoxy(50, 30/tamanho_textos + i);
+	    	printf("%s", paginas[i]);	
+		}	
+		
+		gotoxy(44, 30);
+		printf("Digite sua escolha: ");
+		scanf("%d", &escolha);
+			
+		if(escolha == 1){
+			page_1();
+		}
+		else if (escolha == 2){
+			como_jogar();
+		}
+		else if (escolha == 0){
+			break;
+		}
+	}	
 }
 
 void start_game(){

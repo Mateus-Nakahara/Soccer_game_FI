@@ -3,7 +3,7 @@
 #include <conio.h>
 #include <conio.c>
 #include <string.h>
-#include <windows.h>
+#include <windows.h>	
 
 #include "menu.c"
 #include "personagens.c"
@@ -20,7 +20,7 @@ main(){
 		
 		first_screen();
 		text(35, 7, 14);
-	
+		
 		tecla = getch();
 		textbackground(0);
 		
