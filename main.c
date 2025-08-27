@@ -3,10 +3,13 @@
 #include <conio.h>
 #include <conio.c>
 #include <string.h>
-#include <windows.h>	
+#include <windows.h>
+#include <stdlib.h>
+#include <time.h>
 
 #include "menu.c"
 #include "personagens.c"
+#include "jogofut.cpp"
 
 main(){
 	setlocale(LC_ALL, "Portuguese");

@@ -1,19 +1,22 @@
 #ifndef MENUS_H
 #define MENUS_H
 
-int i, x, y;
 char *name;
 
-void initialing(){
-	char *text = "Não coloque o jogo em tela cheia!";
-	
-	gotoxy(42, 13);
+void maquina_escrever(char *text){
 	int tam = strlen(text);
+	textcolor(15);
+	int i;
 	for (i = 0; i< tam;i++){
 		printf("%c", text[i]);
-		Sleep(100);
+		Sleep(50);
 	}
 	Sleep(1000);
+}
+
+void initialing(){
+	gotoxy(42, 13);
+	maquina_escrever("Não coloque o jogo em tela cheia!");
 }
 
 void letter_P(int x, int y){
@@ -278,6 +281,8 @@ void first_screen(){
 	system("cls");
 
     textbackground(2);
+    int x, y;
+    
     for (y = 0; y <=5; y++){
     	gotoxy(1, y + 25);
     	for (x = 0; x <=119; x++){
@@ -332,6 +337,8 @@ void credits()
     printf("%s", titulo);
     
     Sleep(500);
+    
+    int i;
     
     for (i = 0; i < numero_de_funcoes; i++){
         int y_pos = 6 + (i * 4); 
@@ -403,6 +410,8 @@ void instructions(){
 		
 		int tamanho_textos = sizeof(paginas) / sizeof(paginas[0]);
 		
+		int i;
+		
 		textcolor(15);
 		for(i = 0; i<tamanho_textos; i++){
 			gotoxy(50, (30 - tamanho_textos) / 2 + i);
@@ -420,15 +429,6 @@ void instructions(){
 			como_jogar();
 		}
 	}
-}
-
-void start_game(){
-	system("cls");
-	
-	//personagem_feminino(6, 3, 4, 15, 11, 1, 8, 12);
-	printf("Teste");
-	getch();
-	//printf(name);
 }
 
 
