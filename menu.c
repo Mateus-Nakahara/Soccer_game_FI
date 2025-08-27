@@ -409,26 +409,24 @@ void instructions(){
 	    	printf("%s", paginas[i]);	
 		}	
 		
-		gotoxy(44, 30);
+		gotoxy(50, 30);
 		printf("Digite sua escolha: ");
 		scanf("%d", &escolha);
-			
-		if(escolha == 1){
-			page_1();
+		
+		if (escolha == 1){
+			teclas();
 		}
 		else if (escolha == 2){
 			como_jogar();
 		}
-		else if (escolha == 0){
-			break;
-		}
-	}	
+	}
 }
 
 void start_game(){
 	system("cls");
 	
-	personagem_feminino(6, 3, 4, 15, 11, 1, 8, 12);
+	//personagem_feminino(6, 3, 4, 15, 11, 1, 8, 12);
+	printf("Teste");
 	getch();
 	//printf(name);
 }
