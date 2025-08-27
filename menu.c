@@ -405,7 +405,7 @@ void instructions(){
 		
 		textcolor(15);
 		for(i = 0; i<tamanho_textos; i++){
-			gotoxy(50, 30/tamanho_textos + i);
+			gotoxy(50, (30 - tamanho_textos) / 2 + i);
 	    	printf("%s", paginas[i]);	
 		}	
 		
