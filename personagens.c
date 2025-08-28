@@ -3,7 +3,6 @@
 
 int inicioX = 4;
 int inicioY = 2;
-int i;
 
 void print_color(int x, int y, int color, const char *text) {
     textbackground(color);
@@ -12,6 +11,8 @@ void print_color(int x, int y, int color, const char *text) {
 }
 
 void personagem_masculino(int pele, int olho, int cabelo, int camiseta, int manga_camiseta, int shorts, int sapato) {
+	int i;
+	
     textbackground(14);
     print_color(5, 2, cabelo, "      ");
     print_color(4, 3, cabelo, "       ");
@@ -90,6 +91,8 @@ void personagem_masculino(int pele, int olho, int cabelo, int camiseta, int mang
 }
 
 void personagem_feminino(int pele, int olho, int cabelo, int camiseta, int manga_camiseta, int shorts, int sapato, int boca) {
+	int i;
+	
     textbackground(14);
     print_color(5, 2, cabelo, "      ");
     print_color(4, 3, cabelo, "      ");

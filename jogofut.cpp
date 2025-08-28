@@ -1,8 +1,5 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <locale.h>
-#include <time.h>
+#ifndef JOGO_FUNCIONAL
+#define JOGO_FUNCIONAL
 
 // Cores
 #define RESET   "\033[0m"
@@ -13,6 +10,35 @@
 #define ROXO    "\033[1;35m"
 #define CIANO   "\033[1;36m"
 #define BRANCO  "\033[1;37m"
+
+#ifdef _WIN32
+#include <windows.h>
+#endif
+
+// Função para habilitar cores no console do Windows
+void habilitarCores() {
+#ifdef _WIN32
+    // Define a constante se ela não existir (para compiladores mais antigos)
+    #ifndef ENABLE_VIRTUAL_TERMINAL_PROCESSING
+    #define ENABLE_VIRTUAL_TERMINAL_PROCESSING 0x0004
+    #endif
+
+    HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    if (hOut == INVALID_HANDLE_VALUE) {
+        return;
+    }
+
+    DWORD dwMode = 0;
+    if (!GetConsoleMode(hOut, &dwMode)) {
+        return;
+    }
+
+    dwMode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+    if (!SetConsoleMode(hOut, dwMode)) {
+        return;
+    }
+#endif
+}
 
 // Estrutura que representa um time
 typedef struct {                    // Serve para criar uma struct e dar um apelido para ela
@@ -183,11 +209,49 @@ void status(Jogador j) {
     printf("Jogos disputados: %s%d%s\n", BRANCO, j.jogos, RESET);
 }
 
+void Texto_inicial(){
+	char *textos[] = {
+		"Seja bem vindo ao jogo!",
+		"Seu objetivo final é chegar na seleção Brasileira.",
+		"Durante o jogo você irá enfrentar alguns desafios em sua carreira",
+		"Diversas experiências e mais de 1 final possível",
+		"Aproveite o jogo, e que você tenha uma boa experiência!"
+	};
+	
+	int qnt_textos = sizeof(textos) / sizeof(textos[0]);
+	
+	// CORREÇÃO: Variável 'i' declarada no início da função
+	int i; 
+	
+	textcolor(15);
+	system("cls");
+	
+	for (i = 0; i < qnt_textos; i++){
+		int tam_texto = strlen(textos[i]);
+		
+		gotoxy((120 - tam_texto) / 2, 4 + (i*2));
+		maquina_escrever(textos[i]);
+		printf("\n\n");
+	}
+	
+	char *text = "Pressione qualquer tecla para iniciar o jogo...";
+	int tam_texto1 = strlen(text);
+	
+	gotoxy((120 - tam_texto1) / 2, 29);
+	printf("%s", text);
+	getch();
+}
+
 // Programa principal
-main() 
+void start_game() 
 {
+    int i;
+    system("cls");
+    habilitarCores();
     setlocale(LC_ALL, "");
     srand(time(NULL));
+  
+    Texto_inicial();
 
     Jogador jogador;
     criar_jogador(&jogador);
@@ -249,3 +313,4 @@ main()
 
     return 0;
 }
+#endif
