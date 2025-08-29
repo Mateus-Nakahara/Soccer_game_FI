@@ -7,9 +7,9 @@
 #include <stdlib.h>
 #include <time.h>
 
-#include "menu.c"
-#include "personagens.c"
-#include "jogofut.cpp"
+#include "bibliotecas/menu.c"
+#include "bibliotecas/personagens.c"
+#include "bibliotecas/jogofut.cpp"
 
 main(){
 	setlocale(LC_ALL, "Portuguese");
