@@ -9,7 +9,7 @@
 
 #include "bibliotecas/menu.c"
 #include "bibliotecas/personagens.c"
-#include "bibliotecas/jogofut.cpp"
+#include "bibliotecas/jogofut.c"
 
 main(){
 	setlocale(LC_ALL, "Portuguese");

@@ -89,7 +89,7 @@ void criar_jogador(Jogador *j) {
     scanf(" %[^\n]", j->nome);                          // "->" Usado para acessar um campo de uma struct que está em um ponteiro.
 
     // Jogador escolhe posição
-    printf("Escolha sua posição (%sAtacante%s / %sMeio%s / %sDefesa%s / %sGoleiro%s): ",
+    printf("Escolha sua posição (%sAtacante%s / %sMeio%s / %Zagueiro%s / %sGoleiro%s): ",
            AMARELO, RESET, AMARELO, RESET, AMARELO, RESET, AMARELO, RESET);
     scanf(" %[^\n]", j->posicao);
 
@@ -97,7 +97,7 @@ void criar_jogador(Jogador *j) {
     srand(time(NULL));
     if (strcmp(j->posicao, "Atacante") == 0) j->habilidade = 60 + rand() % 20;
     else if (strcmp(j->posicao, "Meio") == 0) j->habilidade = 55 + rand() % 25;
-    else if (strcmp(j->posicao, "Defesa") == 0) j->habilidade = 50 + rand() % 30;
+    else if (strcmp(j->posicao, "Zagueiro") == 0) j->habilidade = 50 + rand() % 30;
     else j->habilidade = 45 + rand() % 35;
 
     j->contratado = 0;
@@ -249,10 +249,10 @@ void Texto_inicial(){
 void start_game() 
 {
     int i;
-    system("cls");
     habilitarCores();
     setlocale(LC_ALL, "");
     srand(time(NULL));
+    clrscr();
   
     Texto_inicial();
 
@@ -313,7 +313,5 @@ void start_game()
             printf("%sOpção inválida!%s\n", VERMELHO, RESET);
         }
     }
-
-    return 0;
 }
 #endif
