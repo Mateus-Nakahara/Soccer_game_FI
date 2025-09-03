@@ -82,14 +82,36 @@ void carregamento(const char *msg) {
     printf("\n");
 }
 
+//Criação do personagem
+void criar_personagem(){
+	system("cls");
+	printf("Agora vamos criar o seu personagem!");
+	
+	printf("Você deseja ser Homem ou Mulher?");
+	
+	printf("[1] - Alterar pele");
+	printf("[2] - Alterar olho");
+	printf("[3] - Alterar cabelo");
+	printf("[4] - Alterar camiseta");
+	printf("[5] - Alterar manga_camiseta");
+	printf("[6] - Alterar shorts");
+	printf("[7] - Alterar sapato");
+	printf("[8] - Alterar pele");
+}
+
 // Criação do jogador
 void criar_jogador(Jogador *j) {
-    printf("\n%sCRIAÇÃO DO JOGADOR%s\n", ROXO, RESET);
+	char *title = "CRIAÇÃO DO JOGADOR";
+	
+	gotoxy((120-strlen(title)) / 2, 1);
+    printf("%s%s%s\n", ROXO, title, RESET);
+    
+    
     printf("Digite seu nome: ");
     scanf(" %[^\n]", j->nome);                          // "->" Usado para acessar um campo de uma struct que está em um ponteiro.
 
     // Jogador escolhe posição
-    printf("Escolha sua posição (%sAtacante%s / %sMeio%s / %Zagueiro%s / %sGoleiro%s): ",
+    printf("Escolha sua posição (%sAtacante%s / %sMeio%s / %sZagueiro%s / %sGoleiro%s): ",
            AMARELO, RESET, AMARELO, RESET, AMARELO, RESET, AMARELO, RESET);
     scanf(" %[^\n]", j->posicao);
 
@@ -104,6 +126,8 @@ void criar_jogador(Jogador *j) {
     strcpy(j->time_atual, "Nenhum"); // Começa sem time
     j->salario = 0;
     j->jogos = 0;
+
+	criar_personagem();
 
     printf("\n%sJogador criado com sucesso!%s\n", VERDE, RESET);
     printf("Nome: %s%s%s | Posição: %s%s%s | Habilidade inicial: %s%d%s\n",
@@ -223,7 +247,6 @@ void Texto_inicial(){
 	
 	int qnt_textos = sizeof(textos) / sizeof(textos[0]);
 	
-	// CORREÇÃO: Variável 'i' declarada no início da função
 	int i; 
 	
 	textcolor(15);
@@ -252,9 +275,10 @@ void start_game()
     habilitarCores();
     setlocale(LC_ALL, "");
     srand(time(NULL));
-    clrscr();
   
     Texto_inicial();
+    
+    system("cls");
 
     Jogador jogador;
     criar_jogador(&jogador);
