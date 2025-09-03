@@ -65,18 +65,18 @@ void painelDeCriacao() {
     const char *partes_feminino[] = {"Pele", "Olho", "Cabelo", "Camiseta", "Manga", "Shorts", "Sapato", "Boca"};
     int num_partes = (genero == 0) ? 7 : 8;
 
-    int cores_masculino[] = {6, 9, 0, 2, 10, 1, 15};
-    int cores_feminino[] = {6, 10, 13, 4, 12, 3, 0, 12};
+    int cores_masculino[] = {6, 9, 14, 14, 10, 1, 8	};
+    int cores_feminino[] = {6, 9, 14, 14, 10, 1, 8, 13};
 
     int opcao_parte = 0;
 
     // DESENHO INICIAL E ESTÁTICO DA TELA
     system("cls");
     
-    gotoxy(8, 14); textcolor(15); printf("--- PALETA DE CORES (0-15) ---");
+    gotoxy(8, 15); textcolor(15); printf("--- PALETA DE CORES (0-15) ---");
     for(int i = 0; i < 8; i++) {
-        gotoxy(4, 16+i); textcolor(i); printf("%2d: %-13s", i, obterNomeCor(i));
-        gotoxy(26, 16+i); textcolor(i+8); printf("%2d: %-13s", i+8, obterNomeCor(i+8));
+        gotoxy(4, 17+i); textcolor(i); printf("%2d: %-13s", i, obterNomeCor(i));
+        gotoxy(26, 17+i); textcolor(i+8); printf("%2d: %-13s", i+8, obterNomeCor(i+8));
     }
 
     while (opcao_parte != num_partes + 1) {
@@ -103,14 +103,12 @@ void painelDeCriacao() {
 
         // --- INPUT DO USUÁRIO ---
         textcolor(15);
-        gotoxy(5, 25); printf("Escolha uma opcao para alterar:                                ");
-        gotoxy(35, 25);
+        gotoxy(5, 27); printf("Escolha uma opcao para alterar: ");
         scanf("%d", &opcao_parte);
 
         if (opcao_parte > 0 && opcao_parte <= num_partes) {
-            int nova_cor = -1;
-            gotoxy(5, 26); printf("Digite o novo codigo da cor (0-15):           ");
-            gotoxy(42, 26);
+            int nova_cor = -1;	
+            gotoxy(5, 28); printf("Digite o novo codigo da cor (0-15): ");
             scanf("%d", &nova_cor);
 
             if (nova_cor >= 0 && nova_cor <= 15) {

@@ -99,14 +99,9 @@ void personagem_feminino(int pele, int olho, int cabelo, int camiseta, int manga
     textbackground(pele);
     printf(" ");
 	print_color(5, 4, cabelo, "   ");
-
-    textbackground(olho); 
-	printf(" ");
     textbackground(pele); 
-	printf(" ");
-	textbackground(olho); 
-	printf(" ");
-	print_color(5, 5, cabelo, " ");
+	printf("   ");
+	print_color(5, 5, cabelo, "  ");
 	print_color(6, 5, pele, "  ");
     textbackground(olho); 
 	printf(" ");
@@ -117,10 +112,14 @@ void personagem_feminino(int pele, int olho, int cabelo, int camiseta, int manga
     textbackground(olho); 
 	printf(" ");
 	
-    print_color(5, 6, pele, "      ");
-    print_color(6, 7, pele, "   ");
-    textbackground(boca);
-    printf("  ");
+    print_color(5, 6, pele, "   ");
+    textbackground(olho); 
+	printf(" ");
+	textbackground(pele); 
+	printf(" ");
+	textbackground(olho); 
+	printf(" ");
+    print_color(6, 7, pele, "     ");
 
     for (i = 1; i <= 2; i++) {
         print_color(4, 4, cabelo, " ");
