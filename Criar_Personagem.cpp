@@ -66,7 +66,7 @@ void painelDeCriacao() {
     int num_partes = (genero == 0) ? 7 : 8;
 
     int cores_masculino[] = {6, 9, 14, 14, 10, 1, 8	};
-    int cores_feminino[] = {6, 9, 14, 14, 10, 1, 8, 13};
+    int cores_feminino[] = {6, 9, 14, 14, 10, 1, 8};
 
     int opcao_parte = 0;
 
@@ -76,7 +76,7 @@ void painelDeCriacao() {
     gotoxy(8, 15); textcolor(15); printf("--- PALETA DE CORES (0-15) ---");
     for(int i = 0; i < 8; i++) {
         gotoxy(4, 17+i); textcolor(i); printf("%2d: %-13s", i, obterNomeCor(i));
-        gotoxy(26, 17+i); textcolor(i+8); printf("%2d: %-13s", i+8, obterNomeCor(i+8));
+        gotoxy(20, 17+i); textcolor(i+8); printf("%2d: %-13s", i+8, obterNomeCor(i+8));
     }
 
     while (opcao_parte != num_partes + 1) {
@@ -98,7 +98,7 @@ void painelDeCriacao() {
         if (genero == 0) {
             personagem_masculino(cores_masculino[0], cores_masculino[1], cores_masculino[2], cores_masculino[3], cores_masculino[4], cores_masculino[5], cores_masculino[6]);
         } else {
-            personagem_feminino(cores_feminino[0], cores_feminino[1], cores_feminino[2], cores_feminino[3], cores_feminino[4], cores_feminino[5], cores_feminino[6], cores_feminino[7]);
+            personagem_feminino(cores_feminino[0], cores_feminino[1], cores_feminino[2], cores_feminino[3], cores_feminino[4], cores_feminino[5], cores_feminino[6]);
         }
 
         // --- INPUT DO USUÁRIO ---

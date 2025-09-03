@@ -90,7 +90,7 @@ void personagem_masculino(int pele, int olho, int cabelo, int camiseta, int mang
     textbackground(0);
 }
 
-void personagem_feminino(int pele, int olho, int cabelo, int camiseta, int manga_camiseta, int shorts, int sapato, int boca) {
+void personagem_feminino(int pele, int olho, int cabelo, int camiseta, int manga_camiseta, int shorts, int sapato) {
 	int i;
 	
     textbackground(14);
