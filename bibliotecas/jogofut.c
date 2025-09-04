@@ -85,40 +85,48 @@ void carregamento(const char *msg) {
 
 // Criação do jogador
 void criar_jogador(Jogador *j) {
-	system("cls");
-	char *title = "CRIAÇÃO DO JOGADOR";
+	while(1){
+		system("cls");
+		char *title = "CRIAÇÃO DO JOGADOR";
+		
+		gotoxy((120-strlen(title)) / 2, 1);
+	    printf("%s%s%s\n", ROXO, title, RESET);
+	    
+	    
+	    printf("\nDigite seu nome: ");
+	    scanf(" %[^\n]", j->nome);                          // "->" Usado para acessar um campo de uma struct que está em um ponteiro.
 	
-	gotoxy((120-strlen(title)) / 2, 1);
-    printf("%s%s%s\n", ROXO, title, RESET);
-    
-    
-    printf("Digite seu nome: ");
-    scanf(" %[^\n]", j->nome);                          // "->" Usado para acessar um campo de uma struct que está em um ponteiro.
-
-    // Jogador escolhe posição
-    printf("Escolha sua posição (%sAtacante%s / %sMeio%s / %sZagueiro%s / %sGoleiro%s): ",
-           AMARELO, RESET, AMARELO, RESET, AMARELO, RESET, AMARELO, RESET);
-    scanf(" %[^\n]", j->posicao);
-
-    // Atribui habilidade inicial dependendo da posição
-    srand(time(NULL));
-    if (strcmp(j->posicao, "Atacante") == 0) j->habilidade = 60 + rand() % 20;
-    else if (strcmp(j->posicao, "Meio") == 0) j->habilidade = 55 + rand() % 25;
-    else if (strcmp(j->posicao, "Zagueiro") == 0) j->habilidade = 50 + rand() % 30;
-    else j->habilidade = 45 + rand() % 35;
-
-    j->contratado = 0;
-    strcpy(j->time_atual, "Nenhum"); // Começa sem time
-    j->salario = 0;
-    j->jogos = 0;
-
-	create_person();
+	    // Jogador escolhe posição
+	    printf("Escolha sua posição (%sAtacante%s / %sMeio%s / %sZagueiro%s / %sGoleiro%s): ",
+	           AMARELO, RESET, AMARELO, RESET, AMARELO, RESET, AMARELO, RESET);
+	    scanf(" %[^\n]", j->posicao);
 	
-	system("cls");
-
-    printf("\n%sJogador criado com sucesso!%s\n", VERDE, RESET);
-    printf("Nome: %s%s%s | Posição: %s%s%s | Habilidade inicial: %s%d%s\n",
-           AZUL, j->nome, RESET, AMARELO, j->posicao, RESET, VERDE, j->habilidade, RESET);
+	    // Atribui habilidade inicial dependendo da posição
+	    srand(time(NULL));
+	    if (strcmp(j->posicao, "Atacante") == 0) j->habilidade = 20 + rand() % 20;
+	    else if (strcmp(j->posicao, "Meio") == 0) j->habilidade = 20 + rand() % 25;
+	    else if (strcmp(j->posicao, "Zagueiro") == 0) j->habilidade = 20 + rand() % 30;
+	    else if (strcmp(j->posicao, "Goleiro") == 0) j->habilidade = 20 + rand() % 30;
+	    else{
+	    	printf("%sPosição Inválida!", VERMELHO);
+	    	Sleep(1000);
+	    	continue;
+		}
+	
+	    j->contratado = 0;
+	    strcpy(j->time_atual, "Nenhum"); // Começa sem time
+	    j->salario = 0;
+	    j->jogos = 0;
+	
+		create_person();
+		
+		system("cls");
+	
+	    printf("\n%sJogador criado com sucesso!%s\n", VERDE, RESET);
+	    printf("Nome: %s%s%s | Posição: %s%s%s | Habilidade inicial: %s%d%s\n",
+        AZUL, j->nome, RESET, AMARELO, j->posicao, RESET, VERDE, j->habilidade, RESET);
+        break;
+	}
 }
 
 // Treinamento: pode aumentar a habilidade do jogador

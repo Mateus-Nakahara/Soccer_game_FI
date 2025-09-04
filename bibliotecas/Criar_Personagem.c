@@ -54,7 +54,7 @@ void painelDeCriacao() {
         } else if (opcao == 2) {
             genero = 1;
         } else {
-            gotoxy(45, 18); textcolor(12);
+            gotoxy(45, 19); textcolor(12);
             printf("Opcao invalida! Pressione qualquer tecla para tentar novamente.");
             getch();
         }
@@ -125,7 +125,7 @@ void painelDeCriacao() {
                 }
                  gotoxy(5, 26); printf("                                                         "); // Limpa linha
             } else {
-                gotoxy(5, 27); textcolor(12);
+                gotoxy(15, 19); textcolor(12);
                 printf("Codigo de cor invalido! Pressione qualquer tecla para continuar.");
                 getch();
                 gotoxy(5, 27); printf("                                                                 ");
