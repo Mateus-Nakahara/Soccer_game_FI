@@ -8,8 +8,9 @@
 #include <time.h>
 
 #include "bibliotecas/menu.c"
-#include "bibliotecas/personagens.c"
 #include "bibliotecas/jogofut.c"
+#include "bibliotecas/personagens.c"
+#include "bibliotecas/Criar_Personagem.c"
 
 main(){
 	setlocale(LC_ALL, "Portuguese");

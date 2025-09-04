@@ -127,7 +127,9 @@ void criar_jogador(Jogador *j) {
     j->salario = 0;
     j->jogos = 0;
 
-	criar_personagem();
+	create_person();
+	
+	system("cls");
 
     printf("\n%sJogador criado com sucesso!%s\n", VERDE, RESET);
     printf("Nome: %s%s%s | Posição: %s%s%s | Habilidade inicial: %s%d%s\n",

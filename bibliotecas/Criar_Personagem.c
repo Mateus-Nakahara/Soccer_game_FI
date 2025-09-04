@@ -1,9 +1,5 @@
-#include <stdio.h>
-#include <stdlib.h>  // Para system("cls")
-#include <conio.c>   // Para getch(), textcolor(), textbackground()
-#include <windows.h> // Para a função gotoxy() e configuração da janela
-
-#include "bibliotecas/personagens.c"
+#ifndef CRIACAO_PERSONAGEM
+#define CRIACAO_PERSONAGEM
 
 // --- FUNÇÕES AUXILIARES DE INTERFACE ---
 
@@ -35,8 +31,12 @@ void print_color(int x, int y, int color, const char *text) {
 // =======================================================================
 
 void painelDeCriacao() {
+	int i;
     int genero = -1;
     int opcao = 0;
+    
+    gotoxy(70, 5);
+    printf("%s", name);
 
     // 1. TELA DE SELEÇÃO DE GÊNERO
     while (genero == -1) {
@@ -70,25 +70,31 @@ void painelDeCriacao() {
 
     int opcao_parte = 0;
 
-    // DESENHO INICIAL E ESTÁTICO DA TELA
-    system("cls");
-    
-    gotoxy(8, 15); textcolor(15); printf("--- PALETA DE CORES (0-15) ---");
-    for(int i = 0; i < 8; i++) {
-        gotoxy(4, 17+i); textcolor(i); printf("%2d: %-13s", i, obterNomeCor(i));
-        gotoxy(20, 17+i); textcolor(i+8); printf("%2d: %-13s", i+8, obterNomeCor(i+8));
-    }
-
     while (opcao_parte != num_partes + 1) {
+    	system("cls");
+    	
+    	gotoxy(5, 15); textcolor(15); printf("---- PALETA DE CORES (0-15) ----");
+	    for(i = 0; i < 8; i++) {
+	        gotoxy(4, 17+i); textcolor(i);
+			if (i == 0){
+            	textcolor(8);
+			}
+			printf("%2d: %-13s", i, obterNomeCor(i));
+	        gotoxy(20, 17+i); textcolor(i+8); printf("%2d: %-13s", i+8, obterNomeCor(i+8));
+	    }
+    	
         // --- PAINEL DE OPÇÕES (ESQUERDA) - Redesenhado a cada loop
         gotoxy(5, 2); textcolor(15); printf("PAINEL DE CRIACAO DE PERSONAGEM");
         gotoxy(5, 3); printf("---------------------------------");
-        for (int i = 0; i < num_partes; i++) {
+        for (i = 0; i < num_partes; i++) {
             gotoxy(5, 5 + i);
             int cor_atual = (genero == 0) ? cores_masculino[i] : cores_feminino[i];
             textcolor(7);
-            printf("%d. %-10s:", i + 1, (genero == 0) ? partes_masculino[i] : partes_feminino[i]);
+            printf("%d. %-10s:  ", i + 1, (genero == 0) ? partes_masculino[i] : partes_feminino[i]);
             textcolor(cor_atual);
+			if (cor_atual == 0){
+            	textcolor(8);
+			}
             printf(" %s          ", obterNomeCor(cor_atual));
         }
         textcolor(10);
@@ -141,12 +147,9 @@ void painelDeCriacao() {
     getch();
 }
 
-// --- FUNÇÃO PRINCIPAL PARA INICIAR O PROGRAMA ---
-int main() {
-	window(1, 1, 120, 30);
+void create_person() {
     configurarJanela();
     painelDeCriacao();
-    return 0;
 }
 
 void configurarJanela() {
@@ -165,3 +168,5 @@ const char* obterNomeCor(int cor) {
     }
     return "Invalido";
 }
+
+#endif
