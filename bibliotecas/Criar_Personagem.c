@@ -1,39 +1,22 @@
 #ifndef CRIACAO_PERSONAGEM
 #define CRIACAO_PERSONAGEM
 
-// --- FUNÇÕES AUXILIARES DE INTERFACE ---
-
-void gotoxy(int x, int y);
-void configurarJanela();
-const char* obterNomeCor(int cor);
-
-// =======================================================================
-// === SEU CÓDIGO DE DESENHO DO PERSONAGEM INTEGRADO ABAIXO ===
-// =======================================================================
-
-#ifndef PERSONAGENS_C
-#define PERSONAGENS_C
-
-int inicioX = 72; // Posição X inicial para o desenho na tela
-int inicioY = 5;  // Posição Y inicial para o desenho na tela (ajustado)
-
-// Função auxiliar do seu código para desenhar com cor
-void print_color(int x, int y, int color, const char *text) {
-    textbackground(color);
-    gotoxy(inicioX + x, inicioY + y);
-    printf("%s", text);
+const char* obterNomeCor(int cor) {
+    const char* nomes[] = {
+        "Preto", "Azul", "Verde", "Ciano", "Vermelho", "Magenta", "Marrom", "Cinza Claro",
+        "Cinza Escuro", "Azul Claro", "Verde Claro", "Ciano Claro", "Vermelho Claro",
+        "Magenta Claro", "Amarelo", "Branco"
+    };
+    if (cor >= 0 && cor <= 15) {
+        return nomes[cor];
+    }
+    return "Invalido";
 }
 
-#endif
-
-// =======================================================================
-// === PAINEL DE CRIAÇÃO (CONTROLADOR) ===
-// =======================================================================
-
-void painelDeCriacao() {
+void create_person(int genero, int cores_personagem) {
 	int i;
-    int genero = -1;
     int opcao = 0;
+    genero = -1;
     
     gotoxy(70, 5);
     printf("%s", name);
@@ -62,7 +45,7 @@ void painelDeCriacao() {
 
     // 2. TELA DE CUSTOMIZAÇÃO
     const char *partes_masculino[] = {"Pele", "Olho", "Cabelo", "Camiseta", "Manga", "Shorts", "Sapato"};
-    const char *partes_feminino[] = {"Pele", "Olho", "Cabelo", "Camiseta", "Manga", "Shorts", "Sapato", "Boca"};
+    const char *partes_feminino[] = {"Pele", "Olho", "Cabelo", "Camiseta", "Manga", "Shorts", "Sapato"};
     int num_partes = (genero == 0) ? 7 : 8;
 
     int cores_masculino[] = {6, 9, 14, 14, 10, 1, 8	};
@@ -73,21 +56,21 @@ void painelDeCriacao() {
     while (opcao_parte != num_partes + 1) {
     	system("cls");
     	
-    	gotoxy(5, 15); textcolor(15); printf("---- PALETA DE CORES (0-15) ----");
+    	gotoxy(55, 15); textcolor(15); printf("---- PALETA DE CORES (0-15) ----");
 	    for(i = 0; i < 8; i++) {
-	        gotoxy(4, 17+i); textcolor(i);
+	        gotoxy(54, 17+i); textcolor(i);
 			if (i == 0){
             	textcolor(8);
 			}
 			printf("%2d: %-13s", i, obterNomeCor(i));
-	        gotoxy(20, 17+i); textcolor(i+8); printf("%2d: %-13s", i+8, obterNomeCor(i+8));
+	        gotoxy(70, 17+i); textcolor(i+8); printf("%2d: %-13s", i+8, obterNomeCor(i+8));
 	    }
     	
         // --- PAINEL DE OPÇÕES (ESQUERDA) - Redesenhado a cada loop
-        gotoxy(5, 2); textcolor(15); printf("PAINEL DE CRIACAO DE PERSONAGEM");
-        gotoxy(5, 3); printf("---------------------------------");
+        gotoxy(55, 2); textcolor(15); printf("PAINEL DE CRIACAO DE PERSONAGEM");
+        gotoxy(55, 3); printf("---------------------------------");
         for (i = 0; i < num_partes; i++) {
-            gotoxy(5, 5 + i);
+            gotoxy(55, 5 + i);
             int cor_atual = (genero == 0) ? cores_masculino[i] : cores_feminino[i];
             textcolor(7);
             printf("%d. %-10s:  ", i + 1, (genero == 0) ? partes_masculino[i] : partes_feminino[i]);
@@ -98,7 +81,7 @@ void painelDeCriacao() {
             printf(" %s          ", obterNomeCor(cor_atual));
         }
         textcolor(10);
-        gotoxy(5, 5 + num_partes); printf("%d. Finalizar e Salvar", num_partes + 1);
+        gotoxy(55, 5 + num_partes); printf("%d. Finalizar e Salvar", num_partes + 1);
 
         // --- VISUALIZAÇÃO DO PERSONAGEM (DIREITA) ---
         if (genero == 0) {
@@ -109,12 +92,12 @@ void painelDeCriacao() {
 
         // --- INPUT DO USUÁRIO ---
         textcolor(15);
-        gotoxy(5, 27); printf("Escolha uma opcao para alterar: ");
+        gotoxy(55, 27); printf("Escolha uma opcao para alterar: ");
         scanf("%d", &opcao_parte);
 
         if (opcao_parte > 0 && opcao_parte <= num_partes) {
             int nova_cor = -1;	
-            gotoxy(5, 28); printf("Digite o novo codigo da cor (0-15): ");
+            gotoxy(55, 28); printf("Digite o novo codigo da cor (0-15): ");
             scanf("%d", &nova_cor);
 
             if (nova_cor >= 0 && nova_cor <= 15) {
@@ -125,48 +108,22 @@ void painelDeCriacao() {
                 }
                  gotoxy(5, 26); printf("                                                         "); // Limpa linha
             } else {
-                gotoxy(15, 19); textcolor(12);
+                gotoxy(65, 19); textcolor(12);
                 printf("Codigo de cor invalido! Pressione qualquer tecla para continuar.");
                 getch();
-                gotoxy(5, 27); printf("                                                                 ");
+                gotoxy(55, 27); printf("                                                                 ");
             }
         } else if (opcao_parte != num_partes + 1) {
-             gotoxy(5, 26); textcolor(12);
+             gotoxy(55, 26); textcolor(12);
              printf("Opcao invalida! Pressione qualquer tecla para continuar.");
              getch();
-             gotoxy(5, 26); printf("                                                                 ");
+             gotoxy(55, 26); printf("                                                                 ");
         }
     }
 
+	cores_personagem = (genero == 0) ? cores_masculino : cores_feminino;
     // 3. FINALIZAÇÃO
     system("cls");
-    gotoxy(48, 14); textcolor(10);
-    printf("Personagem criado com sucesso!");
-    gotoxy(45, 16); textcolor(7);
-    printf("Pressione qualquer tecla para iniciar o jogo...");
-    getch();
-}
-
-void create_person() {
-    configurarJanela();
-    painelDeCriacao();
-}
-
-void configurarJanela() {
-    system("mode con: cols=120 lines=30");
-    system("title Criacao de Personagem");
-}
-
-const char* obterNomeCor(int cor) {
-    const char* nomes[] = {
-        "Preto", "Azul", "Verde", "Ciano", "Vermelho", "Magenta", "Marrom", "Cinza Claro",
-        "Cinza Escuro", "Azul Claro", "Verde Claro", "Ciano Claro", "Vermelho Claro",
-        "Magenta Claro", "Amarelo", "Branco"
-    };
-    if (cor >= 0 && cor <= 15) {
-        return nomes[cor];
-    }
-    return "Invalido";
 }
 
 #endif

@@ -6,11 +6,13 @@
 #include <windows.h>
 #include <stdlib.h>
 #include <time.h>
+#include <string.h>
 
 #include "bibliotecas/menu.c"
+#include "bibliotecas/treinos.c"
 #include "bibliotecas/jogofut.c"
 #include "bibliotecas/personagens.c"
-#include "bibliotecas/Criar_Personagem.c"
+#include "bibliotecas/criar_personagem.c"
 
 main(){
 	setlocale(LC_ALL, "Portuguese");

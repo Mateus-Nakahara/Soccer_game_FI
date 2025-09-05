@@ -41,30 +41,52 @@ void habilitarCores() {
 }
 
 // Estrutura que representa um time
-typedef struct {                    // Serve para criar uma struct e dar um apelido para ela
+typedef struct{
     char nome[32];
-    int forca;
+    int dificuldade;
 } Time;
 
 // Estrutura que representa um jogador
-typedef struct {
+typedef struct{
     char nome[32];
     char posicao[32];
-    int habilidade;
+    int gender;
     int contratado;
     char time_atual[32];
     float salario;
     int historico[10];
     int jogos;
+    int energia, moral, chute, penalti, passe, fisico, tatica;
+    int personagem_roupas[];
 } Jogador;
 
 // Lista de times disponíveis
 Time times[] = {               // Escolhe time aleatório
-    {"Corinthians", 99999},
-    {"Santos", 1},
-    {"São Paulo", 5},
-    {"Palmeiras", 0},
-    {"Noroeste", 100}
+    {"Flamengo", 98}, // Nome do time e a dificuldade de entrar (De 0 - 100)
+	{"Palmeiras", 97},
+	{"Corinthians", 95},
+	{"São Paulo", 94},
+	{"Fluminense", 92},
+	{"Vasco da Gama", 90},
+	{"Grêmio", 90},
+	{"Internacional", 89},
+	{"Atlético Mineiro", 88},
+	{"Cruzeiro", 87},
+	{"Athletico Paranaense", 86},
+	{"Botafogo", 85},
+	{"Santos", 84},
+	{"Red Bull Bragantino", 82},
+	{"Bahia", 80},
+	{"Fortaleza", 78},
+	{"Coritiba", 75},
+	{"Goiás", 73},
+	{"Sport Recife", 70},
+	{"Ceará", 68},
+	{"Vitória", 67},
+	{"América Mineiro", 65},
+	{"Juventude", 62},
+	{"Avaí", 60},
+	{"Ponte Preta", 58}
 };
 int n_times = sizeof(times) / sizeof(times[0]);  // Ela calcula quantos elementos existem no vetor times
 
@@ -103,11 +125,17 @@ void criar_jogador(Jogador *j) {
 	
 	    // Atribui habilidade inicial dependendo da posição
 	    srand(time(NULL));
-	    if (strcmp(j->posicao, "Atacante") == 0) j->habilidade = 20 + rand() % 20;
-	    else if (strcmp(j->posicao, "Meio") == 0) j->habilidade = 20 + rand() % 25;
-	    else if (strcmp(j->posicao, "Zagueiro") == 0) j->habilidade = 20 + rand() % 30;
-	    else if (strcmp(j->posicao, "Goleiro") == 0) j->habilidade = 20 + rand() % 30;
-	    else{
+	    if (strcmp(j->posicao, "Atacante") == 0 || strcmp(j->posicao, "Meio") == 0 || strcmp(j->posicao, "Zagueiro") == 0 || strcmp(j->posicao, "Goleiro" == 0)){
+	    	j->chute = 20 + rand() % 20;
+	    	j->fisico = 20 + rand() % 20;
+	    	j->moral = 20 + rand() % 20;
+	    	j->passe = 20 + rand() % 20;
+	    	j->penalti = 20 + rand() % 20;
+	    	j->tatica = 20 + rand() % 20;
+	    	j->energia = 100;
+		}
+	    else
+		{
 	    	printf("%sPosição Inválida!", VERMELHO);
 	    	Sleep(1000);
 	    	continue;
@@ -118,31 +146,21 @@ void criar_jogador(Jogador *j) {
 	    j->salario = 0;
 	    j->jogos = 0;
 	
-		create_person();
+		create_person(j->gender);
 		
 		system("cls");
 	
-	    printf("\n%sJogador criado com sucesso!%s\n", VERDE, RESET);
-	    printf("Nome: %s%s%s | Posição: %s%s%s | Habilidade inicial: %s%d%s\n",
-        AZUL, j->nome, RESET, AMARELO, j->posicao, RESET, VERDE, j->habilidade, RESET);
+		char *text = "Jogador criado com sucesso!";
+	
+		gotoxy((120-strlen(text))/2, 10);
+		
+	    printf("%s%s%s", VERDE, text, RESET);
+	    gotoxy((120-strlen(text) - 5)/2, 12);
+	    printf("Nome: %s%s%s | Posição: %s%s%s\n",
+        AZUL, j->nome, RESET, AMARELO, j->posicao, RESET);
+        Sleep(3000);
         break;
 	}
-}
-
-// Treinamento: pode aumentar a habilidade do jogador
-void treinar(Jogador *j) {
-	system("cls");
-    carregamento("Treinando");
-    int resultado = rand() % 100;
-    if (resultado < 70) {
-        int ganho = 1 + rand() % 5;
-        j->habilidade += ganho;
-        printf("\n%sVocê treinou duro e ganhou +%d de habilidade!%s (Atual: %s%d%s)\n",
-               VERDE, ganho, RESET, VERDE, j->habilidade, RESET);
-    } else {
-        printf("\n%sO treino foi cansativo e você não evoluiu desta vez.%s (Habilidade: %d)\n",
-               AMARELO, RESET, j->habilidade);
-    }
 }
 
 // Peneira em um time
@@ -152,10 +170,10 @@ int peneira(Jogador *j, Time t) {
     int chance = rand() % 100;
 
     // Testa se o jogador passa na peneira
-    if (j->habilidade + (rand() % 30) > t.forca + chance) {
+    if (chance > t.dificuldade) {
         j->contratado = 1;
         strcpy(j->time_atual, t.nome);
-        j->salario = 1000 + j->habilidade * 10;
+        j->salario = 1000 * 10;
         printf("\n%sParabéns! Você foi aprovado na peneira do %s!%s\n", VERDE, t.nome, RESET);
         printf("Salário inicial: %sR$ %.2f%s\n", VERDE, j->salario, RESET);
         Sleep(2000);
@@ -174,9 +192,9 @@ int transferencia(Jogador *j, Time t) {
     int chance = rand() % 100;
 
     // Testa se a transferência é aceita
-    if (j->habilidade + (rand() % 30) > t.forca + chance) {
+    if ((rand() % 100) > t.dificuldade) {
         strcpy(j->time_atual, t.nome);
-        j->salario = 2000 + j->habilidade * 15;
+        j->salario = 2000 * 15;
         printf("\n%sTransferência concluída!%s Você agora joga no %s.\n", VERDE, RESET, t.nome);
         printf("Novo salário: %sR$ %.2f%s\n", VERDE, j->salario, RESET);
         return 1;
@@ -201,7 +219,7 @@ void receber_proposta(Jogador *j) {
             t = times[rand() % n_times];
         } while (strcmp(j->time_atual, t.nome) == 0);
 
-        float novo_salario = 2500 + j->habilidade * 20;
+        float novo_salario = 2500 * 20;
         carregamento("Você recebeu uma proposta!");
         printf("\n%sO time %s fez uma proposta para você!%s\n", CIANO, t.nome, RESET);
         printf("Salário oferecido: %sR$ %.2f%s\n", VERDE, novo_salario, RESET);
@@ -226,19 +244,47 @@ void receber_proposta(Jogador *j) {
 // Mostrar status do jogador
 void status(Jogador j) {
 	system("cls");
-    printf("\n%sSTATUS DO JOGADOR%s\n", ROXO, RESET);
-    printf("Nome: %s%s%s\n", AZUL, j.nome, RESET);       // "." Usado para acessar um campo de uma struct normal (não ponteiro)
-    printf("Posição: %s%s%s\n", AMARELO, j.posicao, RESET);
-    printf("Habilidade: %s%d%s\n", VERDE, j.habilidade, RESET);
+	
+	int i;
+    
+    textcolor(WHITE);
+    textbackground(BLACK);
 
-    if (j.contratado) {
-        printf("Time atual: %s%s%s\n", CIANO, j.time_atual, RESET);
-        printf("Salário: %sR$ %.2f%s\n", VERDE, j.salario, RESET);
-    } else {
-        printf("%sSem contrato.%s\n", VERMELHO, RESET);
-    }
-    printf("Jogos disputados: %s%d%s\n", BRANCO, j.jogos, RESET);
-    Sleep(5000);
+    // Exibe o título do painel
+    textcolor(YELLOW);
+    gotoxy(12, 2);
+    cprintf("CARACTERISTICAS DO JOGADOR");
+    gotoxy(80, 2);
+    cprintf("ATRIBUTOS DO JOGADOR");
+    
+    gotoxy(10, 10);
+    printf("%d", j.gender);
+    
+    if (j.gender == 0){
+    	personagem_masculino(j.personagem_roupas);
+	}
+	else if (j.gender == 1){
+		personagem_feminino(j.personagem_roupas);
+	}
+
+    // Exibe os atributos do jogador
+    gotoxy(3, 25);
+    cprintf("%sNome: %s%s%s", RESET, VERDE, j.nome, RESET);
+
+    gotoxy(3, 26);
+    cprintf("%sPosicao: %s%s%s", RESET, VERDE, j.posicao, RESET);
+
+    gotoxy(3, 27);
+    cprintf("%sTime: %s%s%s", RESET, VERDE, j.time_atual, RESET);
+
+    // Posiciona o cursor fora do painel
+    
+    char *text = "Presione qualquer tecla para voltar ao inicio...";
+    
+    textcolor(14);
+    gotoxy((120 - strlen(text)) / 2, 28);
+    printf("%s", text);
+    getch();
 }
 
 void Texto_inicial(){
@@ -297,26 +343,26 @@ void start_game()
         receber_proposta(&jogador); // Chance de receber proposta a cada rodada
 
         // Menu principal
-        printf("        %sCARREIRA DO JOGADOR%s\n", AZUL, RESET);
+        printf("        %sCARREIRA DO JOGADOR%s\n\n", AZUL, RESET);
         printf("%s1)%s Treinar\n", AMARELO, RESET);
         printf("%s2)%s Fazer peneira em um time\n", AMARELO, RESET);
         printf("%s3)%s Solicitar transferência\n", AMARELO, RESET);
         printf("%s4)%s Ver status\n", AMARELO, RESET);
         printf("%s5)%s Sair\n", AMARELO, RESET);
-        printf("Escolha uma opção: ");
+        printf("\nEscolha uma opção: ");
         scanf("%d", &opcao);
         
         system("cls");
 
         if (opcao == 1) {
         	system("cls");
-            treinar(&jogador);
+            start_training(jogador.energia, jogador.moral, jogador.chute, jogador.penalti, jogador.passe, jogador.fisico, jogador.tatica);
         } else if (opcao == 2) {
         	system("cls");
             printf("\n%sTIMES DISPONÍVEIS%s\n", ROXO, RESET);
             for (i = 0; i < n_times; i++) {
-                printf("%d) %s%s%s (Força: %s%d%s)\n", 
-                       i + 1, AZUL, times[i].nome, RESET, VERDE, times[i].forca, RESET);
+                printf("%d) %s%s%s\n", 
+                       i + 1, AZUL, times[i].nome, RESET, VERDE, RESET);
             }
             printf("Escolha o time: ");
             scanf("%d", &escolha);
@@ -332,8 +378,8 @@ void start_game()
                 printf("\n%sTIMES DISPONÍVEIS%s\n", ROXO, RESET);
                 for (i = 0; i < n_times; i++) {
                     if (strcmp(jogador.time_atual, times[i].nome) != 0) {
-                        printf("%d) %s%s%s (Força: %s%d%s)\n", 
-                               i + 1, AZUL, times[i].nome, RESET, VERDE, times[i].forca, RESET);
+                        printf("%d) %s%s%s\n", 
+                               i + 1, AZUL, times[i].nome, RESET, VERDE, RESET);
                     }
                 }
                 printf("Escolha o time: ");
