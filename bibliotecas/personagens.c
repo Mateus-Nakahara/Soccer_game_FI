@@ -1,8 +1,8 @@
 #ifndef PERSONAGENS_C
 #define PERSONAGENS_C
 
-int inicioX = 10;
-int inicioY = 4;
+int inicioX = 18;
+int inicioY = 2;
 
 void print_color(int x, int y, int color, const char *text) {
     textbackground(color);

@@ -57,7 +57,7 @@ typedef struct{
     int historico[10];
     int jogos;
     int energia, moral, chute, penalti, passe, fisico, tatica;
-    int personagem_roupas[];
+    int roupas[];
 } Jogador;
 
 // Lista de times disponíveis
@@ -114,7 +114,6 @@ void criar_jogador(Jogador *j) {
 		gotoxy((120-strlen(title)) / 2, 1);
 	    printf("%s%s%s\n", ROXO, title, RESET);
 	    
-	    
 	    printf("\nDigite seu nome: ");
 	    scanf(" %[^\n]", j->nome);                          // "->" Usado para acessar um campo de uma struct que está em um ponteiro.
 	
@@ -146,7 +145,7 @@ void criar_jogador(Jogador *j) {
 	    j->salario = 0;
 	    j->jogos = 0;
 	
-		create_person(j->gender);
+		create_person(&j->gender, j->roupas);
 		
 		system("cls");
 	
@@ -156,7 +155,7 @@ void criar_jogador(Jogador *j) {
 		
 	    printf("%s%s%s", VERDE, text, RESET);
 	    gotoxy((120-strlen(text) - 5)/2, 12);
-	    printf("Nome: %s%s%s | Posição: %s%s%s\n",
+	    printf("Nome: %s%s%s | Posição: %s%s%s \n",
         AZUL, j->nome, RESET, AMARELO, j->posicao, RESET);
         Sleep(3000);
         break;
@@ -167,13 +166,14 @@ void criar_jogador(Jogador *j) {
 int peneira(Jogador *j, Time t) {
 	system("cls");
     carregamento("Fazendo peneira");
-    int chance = rand() % 100;
+    int chance = rand() % 20;
+    int media = (j->energia + j->moral + j->chute + j->penalti + j->passe + j->fisico + j->tatica) / 7;
 
     // Testa se o jogador passa na peneira
-    if (chance > t.dificuldade) {
+    if (chance + media > t.dificuldade) {
         j->contratado = 1;
         strcpy(j->time_atual, t.nome);
-        j->salario = 1000 * 10;
+        j->salario = 123 * media;
         printf("\n%sParabéns! Você foi aprovado na peneira do %s!%s\n", VERDE, t.nome, RESET);
         printf("Salário inicial: %sR$ %.2f%s\n", VERDE, j->salario, RESET);
         Sleep(2000);
@@ -258,13 +258,12 @@ void status(Jogador j) {
     cprintf("ATRIBUTOS DO JOGADOR");
     
     gotoxy(10, 10);
-    printf("%d", j.gender);
     
-    if (j.gender == 0){
-    	personagem_masculino(j.personagem_roupas);
+    if (j.gender == 1){
+    	personagem_masculino(j.roupas[0], j.roupas[1], j.roupas[2]);
 	}
-	else if (j.gender == 1){
-		personagem_feminino(j.personagem_roupas);
+	else if (j.gender == 0){
+		personagem_feminino(j.roupas[0], j.roupas[1], j.roupas[2]);
 	}
 
     // Exibe os atributos do jogador
@@ -276,13 +275,15 @@ void status(Jogador j) {
 
     gotoxy(3, 27);
     cprintf("%sTime: %s%s%s", RESET, VERDE, j.time_atual, RESET);
+    gotoxy(3, 28);
+    cprintf("%sGenero: %s%s%s", RESET, VERDE, j.gender == 0 ? "Masculino": "Feminino", RESET);
 
     // Posiciona o cursor fora do painel
     
     char *text = "Presione qualquer tecla para voltar ao inicio...";
     
     textcolor(14);
-    gotoxy((120 - strlen(text)) / 2, 28);
+    gotoxy((120 - strlen(text)) / 2, 29);
     printf("%s", text);
     getch();
 }
@@ -401,4 +402,5 @@ void start_game()
         }
     }
 }
+
 #endif
