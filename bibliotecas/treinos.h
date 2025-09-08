@@ -19,10 +19,10 @@ void animar(const char* msg, int linha, int cor){
 }
 
 // Barra simples sem animação
-void barra(int valor, int linha, const char* nome, int cor){
+void barra(int valor, int x, int y, const char* nome, int cor){
     int i;
 	
-	gotoxy(5, linha);
+	gotoxy(x, y);
     textcolor(cor);
     cprintf("%s: [", nome);
     int barras = valor/2;
@@ -34,20 +34,21 @@ void barra(int valor, int linha, const char* nome, int cor){
 }
 
 // Mostrar status
-void mostrar_status(Jogador *j){
+void mostrar_status(Jogador *j, int x, int y){
     clrscr();
-    gotoxy(5,1); textcolor(14); cprintf("=== STATUS DO JOGADOR ===");
 
-    barra(j->energia, 3, "Energia", 12);
-    barra(j->moral, 4, "Moral", 11);
-    barra(j->chute, 5, "Chute", 12);
-    barra(j->passe, 6, "Passe", 13);
-    barra(j->penalti, 7, "Penalti", 9);
-    barra(j->fisico, 8, "Fisico", 10);
-    barra(j->tatica, 9, "Tatica", 14);
+    barra(j->energia, x, y, "Energia", 12);
+    barra(j->moral, x, y + 1, "Moral", 11);
+    barra(j->chute, x, y + 2, "Chute", 12);
+    barra(j->passe, x, y + 3, "Passe", 13);
+    barra(j->penalti, x, y + 4, "Penalti", 9);
+    barra(j->fisico, x, y + 5, "Fisico", 10);
+    barra(j->tatica, x, y + 6, "Tatica", 14);
+    gotoxy(x, y + 8);
+    printf("SALDO: %sR$%2d%s          SAUDE: %s%2d%s", VERDE, j->dinheiro, RESET, VERMELHO, j->saude, RESET);
 
     if(lesionado){
-        gotoxy(5,11); textcolor(12); cprintf("!! VOCE ESTA LESIONADO !!");
+        gotoxy(x,y + 9); textcolor(12); cprintf("!! VOCE ESTA LESIONADO !!");
     }
 }
 
@@ -99,7 +100,7 @@ void treinar_chute(Jogador *j){
         j->chute += 3;
         j->moral += 1; if(j->moral>100) j->moral=100;
     }
-    barra(j->chute,17,"Chute",12);
+    barra(j->chute, 5, 17,"Chute", 12);
     evento_aleatorio(j, "Chute");
 
     gotoxy(5,19); textcolor(14); cprintf("Pressione ENTER para continuar...");
@@ -144,7 +145,7 @@ void treinar_penalti(Jogador *j){
         j->penalti += 3;
         j->moral += 1; if(j->moral>100) j->moral=100;
     }
-    barra(j->penalti,17,"Penalti",9);
+    barra(j->penalti, 5, 17,"Penalti",9);
     evento_aleatorio(j, "Penalti");
 
     gotoxy(5,19); textcolor(14); cprintf("Pressione ENTER para continuar...");
@@ -161,7 +162,7 @@ void treinar_passe(Jogador *j){
     Sleep(1500);
     j->energia -=8; j->passe +=2; j->moral +=1; if(j->moral>100) j->moral=100;
     animar("Passe melhorou! +2 de habilidade",15,10);
-    barra(j->passe,17,"Passe",13);
+    barra(j->passe, 5, 17,"Passe",13);
     evento_aleatorio(j, "Passe");
 
     gotoxy(5,19); textcolor(14); cprintf("Pressione ENTER para continuar...");
@@ -186,7 +187,7 @@ void treinar_fisico(Jogador *j){
     j->fisico +=4;
     j->moral +=1; if(j->moral>100) j->moral=100;
     animar("Fisico melhorou! +4 de habilidade",15,10);
-    barra(j->fisico,17,"Fisico",10);
+    barra(j->fisico, 5, 17, "Fisico",10);
     evento_aleatorio(j, "Fisico");
 
     gotoxy(5,19); textcolor(14); cprintf("Pressione ENTER para continuar...");
@@ -217,7 +218,7 @@ void treinar_tatica(Jogador *j){
         case 3: j->tatica+=1; j->moral+=1; j->energia-=5; animar("Sistema 5-3-2 treinado! +1 de Tatica",15,10); break;
     }
     if(j->moral>100) j->moral=100;
-    barra(j->tatica,17,"Tatica",14);
+    barra(j->tatica, 5, 17,"Tatica",14);
     evento_aleatorio(j, "Tatica");
 
     gotoxy(5,19); textcolor(14); cprintf("Pressione ENTER para continuar...");
@@ -270,8 +271,8 @@ void treinar_falta(Jogador *j){
         j->moral -= 1; if(j->moral<0) j->moral=0;
     }
 
-    barra(j->chute,17,"Chute",12);
-    barra(j->penalti,18,"Penalti",9);
+    barra(j->chute, 5, 17,"Chute",12);
+    barra(j->penalti, 5, 18,"Penalti",9);
 
     evento_aleatorio(j, "Falta");
 
@@ -306,7 +307,7 @@ void descansar_completo(Jogador *j){
     if(j->fisico>0) j->fisico -=1; if(j->fisico<0) j->fisico=0;
     if(j->tatica>0) j->tatica -=1; if(j->tatica<0) j->tatica=0;
 
-    mostrar_status(j);
+    mostrar_status(j, 5, 3);
 
     gotoxy(5,12); textcolor(11); cprintf("Energia aumentou em +%d!", ganho);
     gotoxy(5,13); textcolor(12); cprintf("Chute, Penalti, Passe, Fisico e Tatica diminuiram em -1!");
@@ -326,7 +327,7 @@ void start_training(Jogador *j){
     system("cls");
     
     do{
-        mostrar_status(j);
+        mostrar_status(j, 5, 3);
 
         if(!lesionado){
             gotoxy(5,17); textcolor(11); cprintf("Escolha um treino:");
@@ -336,23 +337,23 @@ void start_training(Jogador *j){
             gotoxy(5,21); cprintf("4 - Fisico");
             gotoxy(5,22); cprintf("5 - Tatica");
             gotoxy(5,23); cprintf("6 - Aleatorio");
-            gotoxy(5,24); cprintf("7 - Descansar");
-            gotoxy(5,25); cprintf("8 - Falta");
+            gotoxy(5,24); cprintf("7 - Falta");
+            gotoxy(5,25); cprintf("8 - Decansar");
             gotoxy(5,26); cprintf("0 - Sair");
             gotoxy(5,27); textcolor(14); cprintf("Opcao: ");
             scanf("%d",&opcao);
             fflush(stdin);
         } else {
             do{
-                gotoxy(5,24); cprintf("7 - Descansar (obrigatorio por lesao)");
+                gotoxy(5,24); cprintf("8 - Descansar (obrigatorio por lesao)");
                 gotoxy(5,25); cprintf("0 - Sair");
                 gotoxy(5,26); textcolor(12); cprintf("Voce esta lesionado! Somente descanso disponivel.");
                 gotoxy(5,27); textcolor(14); cprintf("Opcao: ");
                 scanf("%d",&opcao); fflush(stdin);
-                if(opcao != 7 && opcao != 0){
+                if(opcao != 8 && opcao != 0){
                     gotoxy(5,28); textcolor(12); cprintf("Opcao invalida! Somente descanso disponivel.");
                 }
-            }while(opcao != 7 && opcao != 0);
+            }while(opcao != 8 && opcao != 0);
         }
 
         switch(opcao){
@@ -362,8 +363,8 @@ void start_training(Jogador *j){
             case 4: treinar_fisico(j); break;
             case 5: treinar_tatica(j); break;
             case 6: treino_aleatorio(j); break;
-            case 7: descansar_completo(j); break;
-            case 8: treinar_falta(j); break;
+            case 7: treinar_falta(j); break;
+            case 8: descansar_completo(j); break;
             case 0: break;
             default: gotoxy(5,29); textcolor(12); cprintf("Opcao invalida!"); Sleep(1000); break;
         }

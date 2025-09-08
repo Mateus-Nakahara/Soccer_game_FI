@@ -22,7 +22,7 @@ void create_person(int *genero, int cores_personagem[]) {
     *genero = -1;
 
     // 1. TELA DE SELEÇÃO DE GÊNERO
-    while (*genero == -1) {
+    while (genero != 0 && genero != 1) {
         system("cls");
         textcolor(15);
         gotoxy(45, 10); printf("SELECIONE O GENERO DO PERSONAGEM");
@@ -32,21 +32,19 @@ void create_person(int *genero, int cores_personagem[]) {
         gotoxy(45, 16); printf("Digite sua opcao: ");
         scanf("%d", genero);
 
-        if (*genero == 1) {
-            *genero = 0;
-        } else if (*genero == 2) {
-            *genero = 1;
+        if (*genero == 1 || *genero == 2) {
+            break;
         } else {
-            gotoxy(45, 19); textcolor(12);
+            gotoxy(32, 19); textcolor(12);
             printf("Opcao invalida! Pressione qualquer tecla para tentar novamente.");
-            getch();
+            Sleep(1000);
         }
     }
 
     // 2. TELA DE CUSTOMIZAÇÃO
     const char *partes_masculino[] = {"Pele", "Olho", "Cabelo", "Camiseta", "Manga", "Shorts", "Sapato"};
     const char *partes_feminino[] = {"Pele", "Olho", "Cabelo", "Camiseta", "Manga", "Shorts", "Sapato"};
-    int num_partes = (*genero == 0) ? 7 : 7;
+    int num_partes = (*genero == 1) ? 7 : 7;
 
     int cores_masculino[] = {6, 9, 14, 14, 10, 1, 8	};
     int cores_feminino[] = {6, 9, 14, 14, 10, 1, 8 };
@@ -71,9 +69,9 @@ void create_person(int *genero, int cores_personagem[]) {
         gotoxy(55, 3); printf("---------------------------------");
         for (i = 0; i < num_partes; i++) {
             gotoxy(55, 5 + i);
-            int cor_atual = (*genero == 0) ? cores_masculino[i] : cores_feminino[i];
+            int cor_atual = (*genero == 1) ? cores_masculino[i] : cores_feminino[i];
             textcolor(7);
-            printf("%d. %s:  ", i + 1, (*genero == 0) ? partes_masculino[i] : partes_feminino[i]);
+            printf("%d. %s:  ", i + 1, (*genero == 1) ? partes_masculino[i] : partes_feminino[i]);
             textcolor(cor_atual);
 			if (cor_atual == 0){
             	textcolor(8);
@@ -84,7 +82,7 @@ void create_person(int *genero, int cores_personagem[]) {
         gotoxy(55, 5 + num_partes); printf("%d. Finalizar e Salvar", num_partes + 1);
 
         // --- VISUALIZAÇÃO DO PERSONAGEM (DIREITA) ---
-        if (*genero == 0) {
+        if (*genero == 1) {
             personagem_masculino(cores_masculino[0], cores_masculino[1], cores_masculino[2], cores_masculino[3], cores_masculino[4], cores_masculino[5], cores_masculino[6]);
         } else {
             personagem_feminino(cores_feminino[0], cores_feminino[1], cores_feminino[2], cores_feminino[3], cores_feminino[4], cores_feminino[5], cores_feminino[6]);
@@ -101,7 +99,7 @@ void create_person(int *genero, int cores_personagem[]) {
             scanf("%d", &nova_cor);
 
             if (nova_cor >= 0 && nova_cor <= 15) {
-                if (*genero == 0) {
+                if (*genero == 1) {
                     cores_masculino[opcao_parte - 1] = nova_cor;
                 } else {
                     cores_feminino[opcao_parte - 1] = nova_cor;
@@ -121,7 +119,7 @@ void create_person(int *genero, int cores_personagem[]) {
         }
     }
 
-	if (*genero == 0) {
+	if (*genero == 1) {
 		memcpy(cores_personagem, cores_masculino, sizeof(cores_masculino));
 	} else {
 		memcpy(cores_personagem, cores_feminino, sizeof(cores_feminino));

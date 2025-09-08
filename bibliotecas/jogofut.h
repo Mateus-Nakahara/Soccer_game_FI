@@ -203,7 +203,12 @@ void criar_jogador(Jogador *j) {
 	    	j->passe = 20 + rand() % 20;
 	    	j->penalti = 20 + rand() % 20;
 	    	j->tatica = 20 + rand() % 20;
+	    	j->dinheiro = 100 + rand() % 500;
+	    	j->erros = 0;
+	    	j->jogos = 0;
+	    	j->acertos = 0;
 	    	j->energia = 100;
+	    	j->saude = 100;
 		}
 	    else
 		{
@@ -235,55 +240,35 @@ void criar_jogador(Jogador *j) {
 }
 
 // Peneira em um time
-int peneira(Jogador *j, Time t) {
+int enviar_proposta(Jogador *j, Time t) {
 	system("cls");
-    carregamento("Fazendo peneira");
+    carregamento("Realizando teste");
     int chance = rand() % 20;
     int media = (j->chute + j->penalti + j->passe + j->fisico + j->tatica) / 5;
 
     // Testa se o jogador passa na peneira
-    if (chance + media > t.dificuldade) {
+    if (chance + media > t.dificuldade + rand() % 20) {
         j->contratado = 1;
         strcpy(j->time_atual, t.nome);
-        j->salario = 123 * media;
-        printf("\n%sParabéns! Você foi aprovado na peneira do %s!%s\n", VERDE, t.nome, RESET);
+        j->salario = 123 * t.dificuldade + (40 * media);
+        printf("\n%sParabéns! Você foi aceito no %s!%s\n", VERDE, t.nome, RESET);
         printf("Salário inicial: %sR$ %.2f%s\n", VERDE, j->salario, RESET);
         Sleep(2000);
         return 1;
     } else {
-        printf("\n%sInfelizmente, você não foi aprovado na peneira do %s.%s\n", VERMELHO, t.nome, RESET);
+        printf("\n%sInfelizmente, você não foi aprovado no time %s.%s\n", VERMELHO, t.nome, RESET);
         Sleep(2000);
 		return 0;
     }
-}
-
-// Solicitar transferência para outro time
-int transferencia(Jogador *j, Time t) {
-	system("cls");
-    carregamento("Enviando proposta de transferência");
-    int chance = rand() % 100;
-
-    // Testa se a transferência é aceita
-    if ((rand() % 100) > t.dificuldade) {
-        strcpy(j->time_atual, t.nome);
-        j->salario = 2000 * 15;
-        printf("\n%sTransferência concluída!%s Você agora joga no %s.\n", VERDE, RESET, t.nome);
-        printf("Novo salário: %sR$ %.2f%s\n", VERDE, j->salario, RESET);
-        return 1;
-    } else {
-        printf("\n%sO %s recusou sua proposta de transferência.%s\n", VERMELHO, t.nome, RESET);
-        return 0;
-    }
-    Sleep(2000);
 }
 
 // Receber proposta de algum time 
 void receber_proposta(Jogador *j) {
 	system("cls");
     int chance = rand() % 100;
+    int media = (j->chute + j->penalti + j->passe + j->fisico + j->tatica) / 5;
 
-    // Apenas 10% de chance de aparecer uma proposta
-    if (chance < 5) {
+    if (chance < 4) {
         Time t;
 
         // Garante que o time sorteado NÃO seja o mesmo do jogador
@@ -291,7 +276,7 @@ void receber_proposta(Jogador *j) {
             t = times[rand() % n_times];
         } while (strcmp(j->time_atual, t.nome) == 0);
 
-        float novo_salario = 2500 * 20;
+        float novo_salario = (t.dificuldade * 100) + (media * 20) ;
         carregamento("Você recebeu uma proposta!");
         printf("\n%sO time %s fez uma proposta para você!%s\n", CIANO, t.nome, RESET);
         printf("Salário oferecido: %sR$ %.2f%s\n", VERDE, novo_salario, RESET);
@@ -309,6 +294,8 @@ void receber_proposta(Jogador *j) {
         } else {
             printf("\n%sVocê recusou a proposta.%s\n", AMARELO, RESET);
         }
+        printf("\nPressione qualquer tecla para continuar...");
+    	getch();
     }
     system("cls");
 }
@@ -318,6 +305,8 @@ void status(Jogador *j) {
 	system("cls");
 	
 	int i;
+    
+    mostrar_status(j, 55, 8);
     
     textcolor(WHITE);
     textbackground(BLACK);
@@ -331,10 +320,10 @@ void status(Jogador *j) {
     
     gotoxy(10, 10);
     
-    if (j->gender == 0){
+    if (j->gender == 1){
     	personagem_masculino(j->roupas[0], j->roupas[1], j->roupas[2], j->roupas[3], j->roupas[4], j->roupas[5], j->roupas[6]);
 	}
-	else if (j->gender == 1){
+	else if (j->gender == 2){
 		personagem_feminino(j->roupas[0], j->roupas[1], j->roupas[2], j->roupas[3], j->roupas[4], j->roupas[5], j->roupas[6]);
 	}
 
@@ -348,7 +337,7 @@ void status(Jogador *j) {
     gotoxy(3, 27);
     cprintf("%sTime: %s%s%s", RESET, VERDE, j->time_atual, RESET);
     gotoxy(3, 28);
-    cprintf("%sGenero: %s%s%s", RESET, VERDE, j->gender == 0 ? "Masculino": "Feminino", RESET);
+    cprintf("%sGenero: %s%s%s", RESET, VERDE, j->gender == 1 ? "Masculino": "Feminino", RESET);
 
     // Posiciona o cursor fora do painel
     
@@ -416,14 +405,14 @@ void start_game()
         receber_proposta(&jogador); // Chance de receber proposta a cada rodada
 
         // Menu principal
+        
         printf("        %sCARREIRA DO JOGADOR%s\n\n", AZUL, RESET);
         printf("%s1)%s Jogar partida\n", AMARELO, RESET);
         printf("%s2)%s Treinar\n", AMARELO, RESET);
-        printf("%s3)%s Realizar peneira\n", AMARELO, RESET);
-        printf("%s4)%s Solicitar transferência\n", AMARELO, RESET);
-        printf("%s5)%s Vizualizar status\n", AMARELO, RESET);
-        printf("%s6)%s Loja\n", AMARELO, RESET);
-        printf("%s7)%s Sair\n", AMARELO, RESET);
+        printf("%s3)%s %s\n", AMARELO, RESET, (jogador.contratado != 1 ? "Peneira" : "Pedir Transferência"));
+        printf("%s4)%s Vizualizar status\n", AMARELO, RESET);
+        printf("%s5)%s Loja\n", AMARELO, RESET);
+        printf("%s6)%s Sair\n", AMARELO, RESET);
         printf("\nEscolha uma opção: ");
         scanf("%d", &opcao);
         
@@ -453,35 +442,15 @@ void start_game()
             printf("Escolha o time: ");
             scanf("%d", &escolha);
             if (escolha >= 1 && escolha <= n_times) {
-                peneira(&jogador, times[escolha - 1]);
+                enviar_proposta(&jogador, times[escolha - 1]);
             }
         } else if (opcao == 4) {
         	system("cls");
-            if (!jogador.contratado) {
-                printf("\n%sVocê ainda não tem contrato!%s\n", VERMELHO, RESET);
-                Sleep(1000);
-            } else {
-                printf("\n%sTIMES DISPONÍVEIS%s\n", ROXO, RESET);
-                for (i = 0; i < n_times; i++) {
-                    if (strcmp(jogador.time_atual, times[i].nome) != 0) {
-                        printf("%d) %s%s%s\n", 
-                               i + 1, AZUL, times[i].nome, RESET, VERDE, RESET);
-                    }
-                }
-                printf("Escolha o time: ");
-                scanf("%d", &escolha);
-                if (escolha >= 1 && escolha <= n_times) {
-                    transferencia(&jogador, times[escolha - 1]);
-                }
-            }
+            status(&jogador);
         } else if (opcao == 5) {
         	system("cls");
-            status(&jogador);
-        } else if (opcao == 6) {
-        	system("cls");
-        	jogador.dinheiro = 100;
         	open_shop(&jogador);
-		}else if (opcao == 7) {
+		}else if (opcao == 6) {
         	system("cls");
             printf("\n%sEncerrando sua carreira...%s\n", VERMELHO, RESET);
             break;
