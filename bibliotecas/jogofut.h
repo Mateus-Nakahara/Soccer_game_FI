@@ -57,36 +57,106 @@ typedef struct{
     int historico[10];
     int jogos;
     int energia, moral, chute, penalti, passe, fisico, tatica;
-    int roupas[];
+    int roupas[7];
+    int acertos;
+    int erros;
+    int dinheiro;
+    int saude;
 } Jogador;
 
 // Lista de times disponíveis
 Time times[] = {               // Escolhe time aleatório
-    {"Flamengo", 98}, // Nome do time e a dificuldade de entrar (De 0 - 100)
-	{"Palmeiras", 97},
+	{"Flamengo", 95}, // Nome do time e a dificuldade de entrar no time (De 0 - 100)
+	{"Palmeiras", 95},
 	{"Corinthians", 95},
-	{"São Paulo", 94},
-	{"Fluminense", 92},
-	{"Vasco da Gama", 90},
-	{"Grêmio", 90},
-	{"Internacional", 89},
-	{"Atlético Mineiro", 88},
-	{"Cruzeiro", 87},
-	{"Athletico Paranaense", 86},
-	{"Botafogo", 85},
-	{"Santos", 84},
-	{"Red Bull Bragantino", 82},
-	{"Bahia", 80},
-	{"Fortaleza", 78},
-	{"Coritiba", 75},
-	{"Goiás", 73},
-	{"Sport Recife", 70},
-	{"Ceará", 68},
-	{"Vitória", 67},
-	{"América Mineiro", 65},
-	{"Juventude", 62},
-	{"Avaí", 60},
-	{"Ponte Preta", 58}
+	{"São Paulo", 95},
+	{"Fluminense", 93},
+	{"Internacional", 91},
+	{"Grêmio", 91},
+	{"Atlético Mineiro", 90},
+	{"Vasco da Gama", 89},
+	{"Athletico Paranaense", 88},
+	{"Cruzeiro", 88},
+	{"Botafogo", 87},
+	{"Santos", 86},
+	{"Red Bull Bragantino", 85},
+	{"Bahia", 84},
+	{"Fortaleza", 82},
+	{"Coritiba", 80},
+	{"Goiás", 79},
+	{"Vitória", 78},
+	{"Ceará", 77},
+	{"Sport Recife", 76},
+	{"América Mineiro", 75},
+	{"Cuiabá", 74},
+	{"Juventude", 73},
+	{"Atlético Goianiense", 72},
+	{"Guarani", 70},
+	{"Ponte Preta", 69},
+	{"Avaí", 68},
+	{"Chapecoense", 67},
+	{"CRB", 66},
+	{"Vila Nova", 65},
+	{"Mirassol", 64},
+	{"Novorizontino", 63},
+	{"Botafogo-SP", 62},
+	{"Ituano", 61},
+	{"Paysandu", 60},
+	{"Remo", 59},
+	{"Náutico", 58},
+	{"Santa Cruz", 57},
+	{"ABC", 56},
+	{"Sampaio Corrêa", 55},
+	{"Figueirense", 54},
+	{"CSA", 53},
+	{"Londrina", 52},
+	{"Criciúma", 51},
+	{"Brusque", 50},
+	{"Ypiranga-RS", 49},
+	{"Botafogo-PB", 48},
+	{"Confiança", 47},
+	{"Ferroviária", 46},
+	{"Volta Redonda", 45},
+	{"São Bernardo", 44},
+	{"Amazonas FC", 43},
+	{"Operário-PR", 42},
+	{"Brasiliense", 41},
+	{"Portuguesa", 40},
+	{"Joinville", 39},
+	{"América-RN", 38},
+	{"Manaus FC", 37},
+	{"Aparecidense", 36},
+	{"Tombense", 35},
+	{"São José-RS", 34},
+	{"Altos-PI", 33},
+	{"Campinense", 32},
+	{"ASA", 31},
+	{"Treze", 30},
+	{"Brasil de Pelotas", 29},
+	{"XV de Piracicaba", 28},
+	{"Bangu", 27},
+	{"Portuguesa-RJ", 26},
+	{"Santo André", 25},
+	{"Juazeirense", 24},
+	{"Moto Club", 23},
+	{"Jacuipense", 22},
+	{"Ferroviário-CE", 21},
+	{"Caxias", 20},
+	{"Retrô FC", 19},
+	{"Athletic Club-MG", 18},
+	{"Tocantinópolis", 17},
+	{"Ceilândia", 16},
+	{"Real Noroeste", 15},
+	{"Pouso Alegre", 14},
+	{"Maringá FC", 13},
+	{"Paraná Clube", 12},
+	{"Hercílio Luz", 11},
+	{"Sergipe", 10},
+	{"Águia de Marabá", 9},
+	{"Iguatu", 8},
+	{"Potiguar de Mossoró", 7},
+	{"Operário-MS", 6},
+	{"Trem-AP", 5}
 };
 int n_times = sizeof(times) / sizeof(times[0]);  // Ela calcula quantos elementos existem no vetor times
 
@@ -121,10 +191,12 @@ void criar_jogador(Jogador *j) {
 	    printf("Escolha sua posição (%sAtacante%s / %sMeio%s / %sZagueiro%s / %sGoleiro%s): ",
 	           AMARELO, RESET, AMARELO, RESET, AMARELO, RESET, AMARELO, RESET);
 	    scanf(" %[^\n]", j->posicao);
-	
+		
 	    // Atribui habilidade inicial dependendo da posição
-	    srand(time(NULL));
-	    if (strcmp(j->posicao, "Atacante") == 0 || strcmp(j->posicao, "Meio") == 0 || strcmp(j->posicao, "Zagueiro") == 0 || strcmp(j->posicao, "Goleiro" == 0)){
+	    
+	    strlwr(j->posicao);
+	    
+	    if (strcmp(j->posicao, "atacante") == 0 || strcmp(j->posicao, "meio") == 0 || strcmp(j->posicao, "zagueiro") == 0 || strcmp(j->posicao, "goleiro") == 0){
 	    	j->chute = 20 + rand() % 20;
 	    	j->fisico = 20 + rand() % 20;
 	    	j->moral = 20 + rand() % 20;
@@ -157,7 +229,7 @@ void criar_jogador(Jogador *j) {
 	    gotoxy((120-strlen(text) - 5)/2, 12);
 	    printf("Nome: %s%s%s | Posição: %s%s%s \n",
         AZUL, j->nome, RESET, AMARELO, j->posicao, RESET);
-        Sleep(3000);
+        Sleep(1500);
         break;
 	}
 }
@@ -167,7 +239,7 @@ int peneira(Jogador *j, Time t) {
 	system("cls");
     carregamento("Fazendo peneira");
     int chance = rand() % 20;
-    int media = (j->energia + j->moral + j->chute + j->penalti + j->passe + j->fisico + j->tatica) / 7;
+    int media = (j->chute + j->penalti + j->passe + j->fisico + j->tatica) / 5;
 
     // Testa se o jogador passa na peneira
     if (chance + media > t.dificuldade) {
@@ -242,7 +314,7 @@ void receber_proposta(Jogador *j) {
 }
 
 // Mostrar status do jogador
-void status(Jogador j) {
+void status(Jogador *j) {
 	system("cls");
 	
 	int i;
@@ -259,24 +331,24 @@ void status(Jogador j) {
     
     gotoxy(10, 10);
     
-    if (j.gender == 1){
-    	personagem_masculino(j.roupas[0], j.roupas[1], j.roupas[2]);
+    if (j->gender == 0){
+    	personagem_masculino(j->roupas[0], j->roupas[1], j->roupas[2], j->roupas[3], j->roupas[4], j->roupas[5], j->roupas[6]);
 	}
-	else if (j.gender == 0){
-		personagem_feminino(j.roupas[0], j.roupas[1], j.roupas[2]);
+	else if (j->gender == 1){
+		personagem_feminino(j->roupas[0], j->roupas[1], j->roupas[2], j->roupas[3], j->roupas[4], j->roupas[5], j->roupas[6]);
 	}
 
     // Exibe os atributos do jogador
     gotoxy(3, 25);
-    cprintf("%sNome: %s%s%s", RESET, VERDE, j.nome, RESET);
+    cprintf("%sNome: %s%s%s", RESET, VERDE, j->nome, RESET);
 
     gotoxy(3, 26);
-    cprintf("%sPosicao: %s%s%s", RESET, VERDE, j.posicao, RESET);
+    cprintf("%sPosicao: %s%s%s", RESET, VERDE, j->posicao, RESET);
 
     gotoxy(3, 27);
-    cprintf("%sTime: %s%s%s", RESET, VERDE, j.time_atual, RESET);
+    cprintf("%sTime: %s%s%s", RESET, VERDE, j->time_atual, RESET);
     gotoxy(3, 28);
-    cprintf("%sGenero: %s%s%s", RESET, VERDE, j.gender == 0 ? "Masculino": "Feminino", RESET);
+    cprintf("%sGenero: %s%s%s", RESET, VERDE, j->gender == 0 ? "Masculino": "Feminino", RESET);
 
     // Posiciona o cursor fora do painel
     
@@ -328,7 +400,7 @@ void start_game()
     setlocale(LC_ALL, "");
     srand(time(NULL));
   
-   // Texto_inicial();
+	//Texto_inicial();
     
     system("cls");
 
@@ -345,32 +417,45 @@ void start_game()
 
         // Menu principal
         printf("        %sCARREIRA DO JOGADOR%s\n\n", AZUL, RESET);
-        printf("%s1)%s Treinar\n", AMARELO, RESET);
-        printf("%s2)%s Fazer peneira em um time\n", AMARELO, RESET);
-        printf("%s3)%s Solicitar transferência\n", AMARELO, RESET);
-        printf("%s4)%s Ver status\n", AMARELO, RESET);
-        printf("%s5)%s Sair\n", AMARELO, RESET);
+        printf("%s1)%s Jogar partida\n", AMARELO, RESET);
+        printf("%s2)%s Treinar\n", AMARELO, RESET);
+        printf("%s3)%s Realizar peneira\n", AMARELO, RESET);
+        printf("%s4)%s Solicitar transferência\n", AMARELO, RESET);
+        printf("%s5)%s Vizualizar status\n", AMARELO, RESET);
+        printf("%s6)%s Loja\n", AMARELO, RESET);
+        printf("%s7)%s Sair\n", AMARELO, RESET);
         printf("\nEscolha uma opção: ");
         scanf("%d", &opcao);
         
         system("cls");
 
-        if (opcao == 1) {
+		if (opcao == 1){
+			iniciar_partida(&jogador);
+		}
+        else if (opcao == 2) {
         	system("cls");
-            start_training(jogador.energia, jogador.moral, jogador.chute, jogador.penalti, jogador.passe, jogador.fisico, jogador.tatica);
-        } else if (opcao == 2) {
+            start_training(&jogador);
+        } else if (opcao == 3) {
         	system("cls");
+        	gotoxy(1, 0);
             printf("\n%sTIMES DISPONÍVEIS%s\n", ROXO, RESET);
             for (i = 0; i < n_times; i++) {
-                printf("%d) %s%s%s\n", 
-                       i + 1, AZUL, times[i].nome, RESET, VERDE, RESET);
+            	gotoxy(1, 3 + i);
+            	if (i > 25)
+            		gotoxy(30, -23+i);
+            	if (i > 51)
+            		gotoxy(60, -49+i);
+            	if (i > 77)
+            		gotoxy(90, -75+i);
+                printf("%d) %s%s%s\n", i + 1, AZUL, times[i].nome, RESET, VERDE, RESET);
             }
+            gotoxy(1, 30);
             printf("Escolha o time: ");
             scanf("%d", &escolha);
             if (escolha >= 1 && escolha <= n_times) {
                 peneira(&jogador, times[escolha - 1]);
             }
-        } else if (opcao == 3) {
+        } else if (opcao == 4) {
         	system("cls");
             if (!jogador.contratado) {
                 printf("\n%sVocê ainda não tem contrato!%s\n", VERMELHO, RESET);
@@ -389,10 +474,14 @@ void start_game()
                     transferencia(&jogador, times[escolha - 1]);
                 }
             }
-        } else if (opcao == 4) {
-        	system("cls");
-            status(jogador);
         } else if (opcao == 5) {
+        	system("cls");
+            status(&jogador);
+        } else if (opcao == 6) {
+        	system("cls");
+        	jogador.dinheiro = 100;
+        	open_shop(&jogador);
+		}else if (opcao == 7) {
         	system("cls");
             printf("\n%sEncerrando sua carreira...%s\n", VERMELHO, RESET);
             break;

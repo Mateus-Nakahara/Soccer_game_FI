@@ -1,6 +1,10 @@
 #ifndef CRIACAO_PERSONAGEM
 #define CRIACAO_PERSONAGEM
 
+#include <stdio.h>
+#include <windows.h>
+#include <string.h>
+
 const char* obterNomeCor(int cor) {
     const char* nomes[] = {
         "Preto", "Azul", "Verde", "Ciano", "Vermelho", "Magenta", "Marrom", "Cinza Claro",
@@ -16,9 +20,6 @@ const char* obterNomeCor(int cor) {
 void create_person(int *genero, int cores_personagem[]) {
 	int i;
     *genero = -1;
-    
-    gotoxy(70, 5);
-    printf("%s", name);
 
     // 1. TELA DE SELEÇÃO DE GÊNERO
     while (*genero == -1) {
@@ -38,7 +39,6 @@ void create_person(int *genero, int cores_personagem[]) {
         } else {
             gotoxy(45, 19); textcolor(12);
             printf("Opcao invalida! Pressione qualquer tecla para tentar novamente.");
-            *genero = -1;
             getch();
         }
     }
@@ -62,8 +62,8 @@ void create_person(int *genero, int cores_personagem[]) {
 			if (i == 0){
             	textcolor(8);
 			}
-			printf("%2d: %-13s", i, obterNomeCor(i));
-	        gotoxy(70, 17+i); textcolor(i+8); printf("%2d: %-13s", i+8, obterNomeCor(i+8));
+			printf("%d: %s", i, obterNomeCor(i));
+	        gotoxy(70, 17+i); textcolor(i+8); printf("%d: %s", i+8, obterNomeCor(i+8));
 	    }
     	
         // --- PAINEL DE OPÇÕES (ESQUERDA) - Redesenhado a cada loop
@@ -73,7 +73,7 @@ void create_person(int *genero, int cores_personagem[]) {
             gotoxy(55, 5 + i);
             int cor_atual = (*genero == 0) ? cores_masculino[i] : cores_feminino[i];
             textcolor(7);
-            printf("%d. %-10s:  ", i + 1, (*genero == 0) ? partes_masculino[i] : partes_feminino[i]);
+            printf("%d. %s:  ", i + 1, (*genero == 0) ? partes_masculino[i] : partes_feminino[i]);
             textcolor(cor_atual);
 			if (cor_atual == 0){
             	textcolor(8);
@@ -101,7 +101,7 @@ void create_person(int *genero, int cores_personagem[]) {
             scanf("%d", &nova_cor);
 
             if (nova_cor >= 0 && nova_cor <= 15) {
-                if (genero == 0) {
+                if (*genero == 0) {
                     cores_masculino[opcao_parte - 1] = nova_cor;
                 } else {
                     cores_feminino[opcao_parte - 1] = nova_cor;
@@ -121,7 +121,11 @@ void create_person(int *genero, int cores_personagem[]) {
         }
     }
 
-	cores_personagem = (*genero == 0) ? cores_masculino : cores_feminino;
+	if (*genero == 0) {
+		memcpy(cores_personagem, cores_masculino, sizeof(cores_masculino));
+	} else {
+		memcpy(cores_personagem, cores_feminino, sizeof(cores_feminino));
+	}
     system("cls");
 }
 

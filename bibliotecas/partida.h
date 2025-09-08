@@ -1,0 +1,107 @@
+#ifndef PARTIDA_H
+#define PARTIDA_H
+
+#include "jogofut.h"
+
+void delay(int ms) { Sleep(ms); }
+
+int placarTime = 0, placarAdversario = 0;
+
+void mostrarPlacar() {
+    textcolor(14);
+    printf("\nPLACAR: Voce %d x %d Adversario\n", placarTime, placarAdversario);
+    textcolor(15);
+}
+
+void eventoZagueiro(Jogador *j, int minuto) {
+    int escolha, chance, sucesso = 0;
+    textcolor(14); printf("\n[%d'] O adversario esta atacando!\n", minuto);
+    textcolor(15);
+    printf("1 - Dar o bote (50%%)\n2 - Cercar (70%%)\n3 - Recuar (90%%)\n-> ");
+    scanf("%d", &escolha);
+    chance = rand() % 100 + 1;
+    if (escolha == 1 && chance <= 50) sucesso = 1;
+    	else if (escolha == 2 && chance <= 70) sucesso = 1;
+    	else if (escolha == 3 && chance <= 90) sucesso = 1;
+    if (sucesso) { textcolor(10); printf("Desarme perfeito!\n"); j->acertos++; }
+    	else { textcolor(12); printf("O atacante passou e marcou gol!\n"); placarAdversario++; j->erros++; }
+    textcolor(15);
+    mostrarPlacar();
+}
+
+void eventoAtacante(Jogador *j, int minuto) {
+    int escolha, chance, sucesso = 0;
+    textcolor(13); printf("\n[%d'] Seu time esta no ataque!\n", minuto);
+    textcolor(15);
+    printf("1 - Chutar (40%%)\n2 - Driblar (60%%)\n3 - Passar (80%%)\n-> ");
+    scanf("%d", &escolha);
+    chance = rand() % 100 + 1;
+    if (escolha == 1 && chance <= 40) sucesso = 1;
+    	else if (escolha == 2 && chance <= 60) sucesso = 1;
+    	else if (escolha == 3 && chance <= 80) sucesso = 1;
+    if (sucesso) { textcolor(10); printf("Gol! Jogada perfeita!\n"); placarTime++; j->acertos++; }
+    	else { textcolor(12); printf("Perdeu a bola.\n"); j->erros++; }
+    textcolor(15);
+    mostrarPlacar();
+}
+
+void eventoGoleiro(Jogador *j, int minuto) {
+    int escolha, chance, sucesso = 0;
+    textcolor(11); printf("\n[%d'] O atacante esta cara a cara!\n", minuto);
+    textcolor(15);
+    printf("1 - Sair do gol (60%%)\n2 - Esperar (70%%)\n3 - Adivinhar lado (50%%)\n-> ");
+    scanf("%d", &escolha);
+    chance = rand() % 100 + 1;
+    if (escolha == 1 && chance <= 60) sucesso = 1;
+    	else if (escolha == 2 && chance <= 70) sucesso = 1;
+    	else if (escolha == 3 && chance <= 50) sucesso = 1;
+    if (sucesso) { textcolor(10); printf("Defesa espetacular!\n"); j->acertos++; }
+    	else { textcolor(12); printf("Gol do adversario!\n"); placarAdversario++; j->erros++; }
+    textcolor(15);
+    mostrarPlacar();
+}
+
+void eventoMeia(Jogador *j, int minuto) {
+    int escolha, chance, sucesso = 0;
+    textcolor(9); printf("\n[%d'] A bola esta no meio de campo!\n", minuto);
+    textcolor(15);
+    printf("1 - Lancar (60%%)\n2 - Segurar (80%%)\n3 - Chutar (30%%)\n-> ");
+    scanf("%d", &escolha);
+    chance = rand() % 100 + 1;
+    if (escolha == 1 && chance <= 60) sucesso = 1;
+    	else if (escolha == 2 && chance <= 80) sucesso = 1;
+    	else if (escolha == 3 && chance <= 30) sucesso = 1;
+    if (sucesso) { textcolor(10); printf("Boa jogada! Gol possivel!\n"); if(rand()%2==0){ placarTime++; printf("Gol marcado!\n"); } j->acertos++; }
+    	else { textcolor(12); printf("Perdeu a bola.\n"); j->erros++; }
+    textcolor(15);
+    mostrarPlacar();
+}
+
+void iniciar_partida(Jogador *j) {
+    srand(time(NULL));
+    int tempo;
+    textcolor(14); printf("\n SIMULADOR DE PARTIDA \n");
+    j->acertos = 0; j->erros = 0;
+    textcolor(11);
+    printf("\nBem-vindo, %s! Posicao: %s \n\n", j->nome, j->posicao);
+    textcolor(15);
+
+    for (tempo = 1; tempo <= 90; tempo++) {
+        printf("[%d'] O jogo segue...\n", tempo);
+        if (rand() % 12 == 0) {
+            if (strcmp(j->posicao, "zagueiro") == 0) eventoZagueiro(j, tempo);
+            	else if (strcmp(j->posicao, "atacante") == 0) eventoAtacante(j, tempo);
+            	else if (strcmp(j->posicao, "goleiro") == 0) eventoGoleiro(j, tempo);
+            		else eventoMeia(j, tempo);
+        }
+        delay(150);
+    }
+
+    textcolor(14); printf("\n FIM DE JOGO \n");
+    textcolor(10); printf("Acertos: %d\n", j->acertos);
+    textcolor(12); printf("Erros: %d\n", j->erros);
+    textcolor(13); printf("PLACAR FINAL: Voce %d x %d Adversario\n", placarTime, placarAdversario);
+    getch();
+}
+
+#endif

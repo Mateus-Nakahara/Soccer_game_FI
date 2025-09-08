@@ -1,6 +1,10 @@
 #ifndef MENUS_H
 #define MENUS_H
 
+#include <stdio.h>
+#include <windows.h>
+#include <string.h>
+
 char *name;
 
 void maquina_escrever(char *text){
@@ -305,7 +309,7 @@ void first_screen(){
 	
 	options(50, 12);
 	
-	gotoxy(1, 30);
+	text(35, 4, 14);
 }
 
 void credits()
@@ -315,19 +319,19 @@ void credits()
 	char *titulo = "--- CREDITOS ---";
     
     char *functions[] = {
-        "Designs",
-        "Tudo o Que o mini timoteo fez",
-        "Tudo que a luisa fez",
-        "Tudo que a Livia Chevette fez",
+		"Sistema de loja",
+		"Partida, Peneira e transferência",
+        "Sistema de treinamento + atributos",
+        "Tela inicial, Roupas personagem, Status e correção de bugs",
         "Agradecimentos"
     };
     
     char *names[] = {
-    	"Mateus (n30), Marcos (n28)",
-    	"Marcos Vinicus Dunge Cassalati",
-    	"Luisa",
-    	"Livia",
-    	"Jose junior"
+    	"Livia Chiavelli",
+    	"Luisa da Silva",
+    	"Marcos Vinicius Dungue Cassalati",
+    	"Mateus Hirano Rodrigues Nakahara",
+    	"José Vieira Junior"
 	};
 
     int numero_de_funcoes = sizeof(functions) / sizeof(functions[0]);
@@ -385,7 +389,6 @@ void como_jogar(){
 void instructions(){
 	int escolha;
 	
-	
 	char *text = "MANUAL";
 	char *title1 = "Selecione uma página para ver as instruções";
 		
@@ -430,7 +433,6 @@ void instructions(){
 		}
 	}
 }
-
 
 
 #endif

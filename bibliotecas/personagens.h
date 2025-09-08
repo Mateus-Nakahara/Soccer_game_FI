@@ -1,6 +1,9 @@
 #ifndef PERSONAGENS_C
 #define PERSONAGENS_C
 
+#include <stdio.h>
+#include <windows.h>
+
 int inicioX = 18;
 int inicioY = 2;
 
