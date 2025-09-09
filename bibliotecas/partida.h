@@ -17,7 +17,7 @@ void eventoZagueiro(Jogador *j, int minuto) {
     int escolha, chance, sucesso = 0;
     textcolor(14); printf("\n[%d'] O adversario esta atacando!\n", minuto);
     textcolor(15);
-    printf("1 - Dar o bote (50%%)\n2 - Cercar (70%%)\n3 - Recuar (90%%)\n-> ");
+    printf("1 - Dar o bote \n2 - Cercar \n3 - Recuar \n-> ");
     scanf("%d", &escolha);
     chance = rand() % 100 + 1;
     if (escolha == 1 && chance <= 50) sucesso = 1;
@@ -33,7 +33,7 @@ void eventoAtacante(Jogador *j, int minuto) {
     int escolha, chance, sucesso = 0;
     textcolor(13); printf("\n[%d'] Seu time esta no ataque!\n", minuto);
     textcolor(15);
-    printf("1 - Chutar (40%%)\n2 - Driblar (60%%)\n3 - Passar (80%%)\n-> ");
+    printf("1 - Chutar \n2 - Driblar\n3 - Passar \n-> ");
     scanf("%d", &escolha);
     chance = rand() % 100 + 1;
     if (escolha == 1 && chance <= 40) sucesso = 1;
@@ -49,7 +49,7 @@ void eventoGoleiro(Jogador *j, int minuto) {
     int escolha, chance, sucesso = 0;
     textcolor(11); printf("\n[%d'] O atacante esta cara a cara!\n", minuto);
     textcolor(15);
-    printf("1 - Sair do gol (60%%)\n2 - Esperar (70%%)\n3 - Adivinhar lado (50%%)\n-> ");
+    printf("1 - Sair do gol \n2 - Esperar \n3 - Adivinhar lado \n-> ");
     scanf("%d", &escolha);
     chance = rand() % 100 + 1;
     if (escolha == 1 && chance <= 60) sucesso = 1;
@@ -65,7 +65,7 @@ void eventoMeia(Jogador *j, int minuto) {
     int escolha, chance, sucesso = 0;
     textcolor(9); printf("\n[%d'] A bola esta no meio de campo!\n", minuto);
     textcolor(15);
-    printf("1 - Lancar (60%%)\n2 - Segurar (80%%)\n3 - Chutar (30%%)\n-> ");
+    printf("1 - Lancar \n2 - Segurar \n3 - Chutar \n-> ");
     scanf("%d", &escolha);
     chance = rand() % 100 + 1;
     if (escolha == 1 && chance <= 60) sucesso = 1;
@@ -77,31 +77,55 @@ void eventoMeia(Jogador *j, int minuto) {
     mostrarPlacar();
 }
 
+void partida(Jogador *j){
+	srand(time(NULL));
+	
+	int tempo;
+	j->acertos = 0; j->erros = 0;
+	
+	textcolor(14); printf("\n SIMULADOR DE PARTIDA \n");
+	
+	textcolor(11); printf("\nBem-vindo, %s! Posicao: %s \n\n", j->nome, j->posicao); textcolor(15);
+	
+	for (tempo = 1; tempo <= 90; tempo++) {
+		printf("[%d'] O jogo segue...\n", tempo);
+	    if (rand() % 12 == 0) {
+	        if (strcmp(j->posicao, "zagueiro") == 0) eventoZagueiro(j, tempo);
+	            else if (strcmp(j->posicao, "atacante") == 0) eventoAtacante(j, tempo);
+	            else if (strcmp(j->posicao, "goleiro") == 0) eventoGoleiro(j, tempo);
+	           	else eventoMeia(j, tempo);
+	    }
+	    delay(200);
+	}
+	
+	textcolor(14); printf("\n FIM DE JOGO \n");
+	textcolor(10); printf("Acertos: %d\n", j->acertos);
+	textcolor(12); printf("Erros: %d\n", j->erros);
+	textcolor(13); printf("PLACAR FINAL: Voce %d x %d Adversario\n", placarTime, placarAdversario);
+}
+
+
+void sem_time(Jogador *j){
+	srand(time(NULL));
+	int chance_partida_aparecer = rand() % 100;
+	
+	if (chance_partida_aparecer < 30){
+		partida(j);
+	}
+	else{
+		printf("%sVocê não possui partidas para jogar...%s", AMARELO, RESET);	
+	}
+}
+
 void iniciar_partida(Jogador *j) {
-    srand(time(NULL));
-    int tempo;
-    textcolor(14); printf("\n SIMULADOR DE PARTIDA \n");
-    j->acertos = 0; j->erros = 0;
-    textcolor(11);
-    printf("\nBem-vindo, %s! Posicao: %s \n\n", j->nome, j->posicao);
-    textcolor(15);
-
-    for (tempo = 1; tempo <= 90; tempo++) {
-        printf("[%d'] O jogo segue...\n", tempo);
-        if (rand() % 12 == 0) {
-            if (strcmp(j->posicao, "zagueiro") == 0) eventoZagueiro(j, tempo);
-            	else if (strcmp(j->posicao, "atacante") == 0) eventoAtacante(j, tempo);
-            	else if (strcmp(j->posicao, "goleiro") == 0) eventoGoleiro(j, tempo);
-            		else eventoMeia(j, tempo);
-        }
-        delay(150);
-    }
-
-    textcolor(14); printf("\n FIM DE JOGO \n");
-    textcolor(10); printf("Acertos: %d\n", j->acertos);
-    textcolor(12); printf("Erros: %d\n", j->erros);
-    textcolor(13); printf("PLACAR FINAL: Voce %d x %d Adversario\n", placarTime, placarAdversario);
-    getch();
+	if (j->contratado != 0){
+		partida(j);
+	}
+	else{
+		sem_time(j);
+	}
+	printf("\n\nPressione qualquer tecla para voltar ao inicio...");
+	getch();
 }
 
 #endif
