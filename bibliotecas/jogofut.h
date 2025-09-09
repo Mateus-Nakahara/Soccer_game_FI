@@ -62,6 +62,7 @@ typedef struct{
     int erros;
     int dinheiro;
     int saude;
+    int partidas_jogadas;
 } Jogador;
 
 // Lista de times disponíveis
@@ -242,24 +243,31 @@ void criar_jogador(Jogador *j) {
 // Peneira em um time
 int enviar_proposta(Jogador *j, Time t) {
 	system("cls");
-    carregamento("Realizando teste");
-    int chance = rand() % 20;
-    int media = (j->chute + j->penalti + j->passe + j->fisico + j->tatica) / 5;
-
-    // Testa se o jogador passa na peneira
-    if (chance + media > t.dificuldade + rand() % 20) {
-        j->contratado = 1;
-        strcpy(j->time_atual, t.nome);
-        j->salario = 123 * t.dificuldade + (40 * media);
-        printf("\n%sParabéns! Você foi aceito no %s!%s\n", VERDE, t.nome, RESET);
-        printf("Salário inicial: %sR$ %.2f%s\n", VERDE, j->salario, RESET);
-        Sleep(2000);
-        return 1;
-    } else {
-        printf("\n%sInfelizmente, você não foi aprovado no time %s.%s\n", VERMELHO, t.nome, RESET);
-        Sleep(2000);
+	if (strcmp(j->time_atual, t.nome) == 0){
+		printf("Você não pode ir para o seu time atual");
+		Sleep(2000);
 		return 0;
-    }
+	}
+	else{
+		carregamento("Realizando teste");
+    
+	    int chance = rand() % 20;
+	    int media = (j->chute + j->penalti + j->passe + j->fisico + j->tatica) / 5;
+	
+	    if (chance + media > t.dificuldade + rand() % 20) {
+	        j->contratado = 1;
+	        strcpy(j->time_atual, t.nome);
+	        j->salario = 123 * t.dificuldade + (40 * media);
+	        printf("\n%sParabéns! Você foi aceito no %s!%s\n", VERDE, t.nome, RESET);
+	        printf("Salário inicial: %sR$ %.2f%s\n", VERDE, j->salario, RESET);
+	        Sleep(2000);
+	        return 1;
+	    } else {
+	        printf("\n%sInfelizmente, você não foi aprovado no time %s.%s\n", VERMELHO, t.nome, RESET);
+	        Sleep(2000);
+			return 0;
+	    }
+	}
 }
 
 // Receber proposta de algum time 
@@ -273,10 +281,10 @@ void receber_proposta(Jogador *j) {
 
         // Garante que o time sorteado NÃO seja o mesmo do jogador
         do {
-            t = times[rand() % n_times];
+            t = times[rand() % (media > n_times) ? n_times: media];
         } while (strcmp(j->time_atual, t.nome) == 0);
 
-        float novo_salario = (t.dificuldade * 100) + (media * 20) ;
+        float novo_salario = 123 * t.dificuldade + (40 * media) ;
         carregamento("Você recebeu uma proposta!");
         printf("\n%sO time %s fez uma proposta para você!%s\n", CIANO, t.nome, RESET);
         printf("Salário oferecido: %sR$ %.2f%s\n", VERDE, novo_salario, RESET);
@@ -410,7 +418,7 @@ void start_game()
         printf("%s1)%s Jogar partida\n", AMARELO, RESET);
         printf("%s2)%s Treinar\n", AMARELO, RESET);
         printf("%s3)%s %s\n", AMARELO, RESET, (jogador.contratado != 1 ? "Peneira" : "Pedir Transferência"));
-        printf("%s4)%s Vizualizar status\n", AMARELO, RESET);
+        printf("%s4)%s Visualizar status\n", AMARELO, RESET);
         printf("%s5)%s Loja\n", AMARELO, RESET);
         printf("%s6)%s Sair\n", AMARELO, RESET);
         printf("\nEscolha uma opção: ");
