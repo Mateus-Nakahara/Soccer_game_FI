@@ -372,7 +372,9 @@ void credits()
 
 void teclas(){
 	system("cls");
-	printf("PALMEIRAS NÃO TEM MUNDIAL!");
+	printf("%sTECLAS%s\n", AMARELO, RESET);
+	printf("\nAs teclas utilizadas são os números do 0 ao 9\n");
+	printf("\nAlém dos números teremos que coletar informações do usuário, como Nome e Posição.");
 	gotoxy(44, 30);
 	printf("Pressione qualquer tecla para voltar...");
 	getch();
@@ -380,7 +382,12 @@ void teclas(){
 
 void como_jogar(){
 	system("cls");
-	printf("PALMEIRAS NÃO TEM MUNDIAL!");
+	printf("%sCOMO JOGAR%s\n", AMARELO, RESET);
+	printf("\n1 - Pressione a tecla 1 para iniciar o jogo na tela inicial\n");
+	printf("\n2 - Após esse comando, digite seu nome e qual posição você deseja jogar\n");
+	printf("\n3 - Selecione o gênero do personagem (1-Masculino ou 2-Feminino) e altere ele da forma como desejar, \nseguindo corretamente os comandos mostrados\n");
+	printf("\n4 - Escolha o que você deseja fazer: 1-Jogar partidas, 2-Treinar, 3-Peneira (realizar uma seleção para algum time), \n4-Visualizar status, 5-Loja e 6-Sair\n");
+	printf("\n5 - Conforme sua escolha, siga as instruções corretamente e se divirta!\n");
 	gotoxy(44, 30);
 	printf("Pressione qualquer tecla para voltar...");
 	getch();

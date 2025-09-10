@@ -384,6 +384,11 @@ void partida(Jogador *j){
 	    	placarTime++;
 	    	mostrarPlacar();
 		}
+		else if (rand() % 40 == 1){
+	    	printf("\n%sSEU TIME TOMOU 1 GOL!%s\n", VERDE, RESET);
+	    	placarAdversario++;
+	    	mostrarPlacar();
+		}
 	    delay(400);
 	}
 	
@@ -419,12 +424,18 @@ void sem_time(Jogador *j){
 }
 
 void iniciar_partida(Jogador *j) {
-	placarTime = 0, placarAdversario = 0;
-	if (j->contratado != 0){
-		partida(j);
+	if (j->lesionado || j->energia <= 0){
+		printf("Você não está em condições para jogar...");
+		j->moral-=2;
 	}
 	else{
-		sem_time(j);
+		placarTime = 0, placarAdversario = 0;
+		if (j->contratado != 0){
+			partida(j);
+		}
+		else{
+			sem_time(j);
+		}	
 	}
 	printf("\n\nPressione qualquer tecla para voltar ao inicio...");
 	getch();

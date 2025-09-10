@@ -63,6 +63,8 @@ typedef struct{
     int dinheiro;
     int saude;
     int partidas_jogadas;
+    int selecao;
+    int lesionado;
 } Jogador;
 
 // Lista de times disponíveis
@@ -210,6 +212,7 @@ void criar_jogador(Jogador *j) {
 	    	j->acertos = 0;
 	    	j->energia = 100;
 	    	j->saude = 100;
+	    	j->lesionado = 0;
 		}
 	    else
 		{
@@ -274,6 +277,7 @@ int enviar_proposta(Jogador *j, Time t) {
 void receber_proposta(Jogador *j) {
 	system("cls");
     int chance = rand() % 100;
+    int chance_selecao = rand() % 10000;
     int media = (j->chute + j->penalti + j->passe + j->fisico + j->tatica) / 5;
 
     if (chance < 4) {
@@ -305,6 +309,14 @@ void receber_proposta(Jogador *j) {
         printf("\nPressione qualquer tecla para continuar...");
     	getch();
     }
+    else if (chance_selecao <= 0 + media){
+    	system("cls");
+    	maquina_escrever("O Técnico Dorival Junior te convocou para a seleção Brasileira!");
+    	
+    	printf("\n\n%sObjetivo Concluido!%s", VERDE, RESET);
+    	Sleep(3000);
+    	j->selecao = 1;
+	}
     system("cls");
 }
 
@@ -397,7 +409,7 @@ void start_game()
     setlocale(LC_ALL, "");
     srand(time(NULL));
   
-	//Texto_inicial();
+	Texto_inicial();
     
     system("cls");
 
@@ -413,6 +425,16 @@ void start_game()
         receber_proposta(&jogador); // Chance de receber proposta a cada rodada
 
         // Menu principal
+    	if (jogador.selecao == 1){
+    		break;
+		}
+		if (jogador.moral <= 5){
+			system("cls");
+			maquina_escrever("Seu Jogador desistiu de seguir a carreira de jogador");
+			maquina_escrever("\nEle não era uma pessoa muito feliz lá.");
+			Sleep(2000);
+			break;
+		}
         
         printf("        %sCARREIRA DO JOGADOR%s\n\n", AZUL, RESET);
         printf("%s1)%s Jogar partida\n", AMARELO, RESET);
