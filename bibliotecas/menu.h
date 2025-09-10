@@ -329,7 +329,7 @@ void credits()
     char *names[] = {
     	"Livia Chiavelli",
     	"Luisa da Silva",
-    	"Marcos Vinicius Dungue Cassalati",
+    	"Marcos Vinicius Dungue Cassalatti",
     	"Mateus Hirano Rodrigues Nakahara",
     	"José Vieira Junior"
 	};
@@ -440,6 +440,12 @@ void instructions(){
 		}
 	}
 }
+
+void fechar() {
+	HWND hwnd = GetConsoleWindow();  // Pega a janela do console
+	PostMessage(hwnd, WM_CLOSE, 0, 0);
+}
+
 
 
 #endif

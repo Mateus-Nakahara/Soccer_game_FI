@@ -39,7 +39,7 @@ int main() {
                 break;
             case '4':
                 system("cls");
-                return 0;
+                fechar();
         }
     }
     textcolor(15);

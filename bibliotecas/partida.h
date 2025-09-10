@@ -104,7 +104,7 @@ void eventoAtacante(Jogador *j, int minuto) {
     if (evento == 0){
 	    textcolor(14); printf("\n[%d'] Seu time esta no ataque!\n", minuto); textcolor(15);
 	    
-		printf("1 - Pedir a bola \n2 - Ir para área \n3 - Não avançar \n4 - Fazer facacão\n-> ");
+		printf("1 - Pedir a bola \n2 - Ir para área \n3 - Não avançar \n4 - Fazer facão\n-> ");
 		    
 		scanf("%d", &escolha);
 		    
@@ -277,9 +277,9 @@ void eventoMeia(Jogador *j, int minuto) {
 	    textcolor(14); printf("\n[%d'] A bola está no meio campo!\n", minuto); textcolor(15);
 	    
 		printf("1 - Lançamento \n2 - Fazer tabela \n3 - Conduzir a bola \n4 - Tocar a bola\n-> ");
-		    
+		
 		scanf("%d", &escolha);
-		    
+		
 		chance = rand() % 100 + 1;
 		    
 		if (escolha == 1 && chance <= j->chute ) sucesso = 1;
@@ -400,15 +400,17 @@ void partida(Jogador *j){
 }
 
 void receber_salario(Jogador *j) {
-    j->partidas_jogadas += 1;
+	if (j->contratado){
+		j->partidas_jogadas += 1;
 
-    if (j->partidas_jogadas % 5 == 0) {
-		system("cls");
-        j->dinheiro += j->salario;
-        printf("%s completou %s%d%s partidas -> salário de %sR$ %.2f%s depositado!\n",
-            j->nome, VERDE, j->partidas_jogadas, RESET, VERDE, j->salario, RESET);
-            Sleep(2000);
-    }
+	    if (j->partidas_jogadas % 5 == 0) {
+			system("cls");
+	        j->dinheiro += j->salario;
+	        printf("%s completou %s%d%s partidas -> salário de %sR$ %.2f%s depositado!\n",
+	            j->nome, VERDE, j->partidas_jogadas, RESET, VERDE, j->salario, RESET);
+	            Sleep(2000);
+	    }	
+	}
 }
 
 void sem_time(Jogador *j){
